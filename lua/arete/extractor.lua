@@ -1,5 +1,8 @@
 local M = {}
 
+local serialize = require("arete.serialize")
+local uv = vim.uv or vim.loop
+
 local theme_name_pattern = "^[%w_.-]+$"
 
 local function assert_theme_name(name)
@@ -11,6 +14,20 @@ end
 local function assert_loader(loader)
 	if type(loader) ~= "function" then
 		error("arete: extractor expects a loader function", 3)
+	end
+end
+
+local function write_file(path, data)
+	local handle, open_err = uv.fs_open(path, "w", 420)
+	if not handle then
+		error(("arete: could not open theme file %s: %s"):format(path, open_err), 2)
+	end
+
+	local ok, write_err = uv.fs_write(handle, data, 0)
+	uv.fs_close(handle)
+
+	if not ok then
+		error(("arete: could not write theme file %s: %s"):format(path, write_err), 2)
 	end
 end
 
@@ -53,6 +70,34 @@ function M.extract(name, loader, opts)
 		background = vim.o.background,
 		highlights = highlights,
 	}
+end
+
+function M.theme_path(name, opts)
+	assert_theme_name(name)
+	opts = opts or {}
+
+	local root = opts.root or (vim.fn.getcwd() .. "/lua/arete/themes")
+	return ("%s/%s.lua"):format(root, name)
+end
+
+function M.write_theme(name, theme, opts)
+	assert_theme_name(name)
+
+	if type(theme) ~= "table" or type(theme.highlights) ~= "table" then
+		error("arete: write_theme expects a theme table with highlights", 2)
+	end
+
+	local output = {
+		name = theme.name or name,
+		background = theme.background,
+		highlights = theme.highlights,
+	}
+
+	local path = M.theme_path(name, opts)
+	vim.fn.mkdir(vim.fn.fnamemodify(path, ":h"), "p")
+	write_file(path, "return " .. serialize.pretty(output) .. "\n")
+
+	return path
 end
 
 return M
