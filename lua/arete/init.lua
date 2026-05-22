@@ -182,12 +182,12 @@ end
 local function load_cache(name, fingerprint)
 	local path = compiler.cache_path(name, fingerprint)
 
-	if not uv.fs_stat(path) then
-		return nil
-	end
-
 	local apply = cache_loaders[path]
 	if not apply then
+		if not uv.fs_stat(path) then
+			return nil
+		end
+
 		local ok, loader = pcall(dofile, path)
 		if not ok then
 			return nil, loader
