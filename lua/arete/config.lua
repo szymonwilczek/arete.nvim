@@ -1,6 +1,15 @@
 local M = {}
 
-local serialize = require("arete.serialize")
+local bit = require("bit")
+
+local function fnv1a(str)
+	local h = bit.tobit(2166136261)
+	for i = 1, #str do
+		h = bit.bxor(h, str:byte(i))
+		h = bit.tobit(h * 16777619)
+	end
+	return bit.tohex(h, 8)
+end
 
 M.defaults = {
 	transparent = false,
@@ -10,90 +19,47 @@ M.defaults = {
 	cache = true,
 }
 
-M.style_groups = {
-	comments = {
-		"Comment",
-		"@comment",
-		"@comment.documentation",
-	},
-	keywords = {
-		"Keyword",
-		"Conditional",
-		"Repeat",
-		"Statement",
-		"Exception",
-		"@keyword",
-		"@keyword.conditional",
-		"@keyword.repeat",
-		"@keyword.exception",
-		"@keyword.return",
-	},
-	functions = {
-		"Function",
-		"@function",
-		"@function.builtin",
-		"@function.call",
-		"@function.method",
-		"@function.method.call",
-	},
-	variables = {
-		"@variable",
-		"@variable.builtin",
-		"@variable.parameter",
-		"@variable.member",
-	},
-	types = {
-		"Type",
-		"Structure",
-		"@type",
-		"@type.builtin",
-		"@type.definition",
-	},
-	strings = {
-		"String",
-		"@string",
-		"@string.documentation",
-	},
-	booleans = {
-		"Boolean",
-		"@boolean",
-	},
-	constants = {
-		"Constant",
-		"@constant",
-		"@constant.builtin",
-	},
-	operators = {
-		"Operator",
-		"@operator",
-	},
-}
-
-M.transparent_groups = {
-	"Normal",
-	"NormalNC",
-	"NormalFloat",
-	"FloatBorder",
-	"SignColumn",
-	"EndOfBuffer",
-	"FoldColumn",
-	"StatusLine",
-	"StatusLineNC",
-	"TabLine",
-	"TabLineFill",
-	"WinBar",
-	"WinBarNC",
-}
-
 M.options = vim.deepcopy(M.defaults)
 
 local function dump_callback(fn)
 	local ok, dump = pcall(string.dump, fn)
 	if ok then
-		return vim.fn.sha256(dump)
+		return fnv1a(dump)
 	end
 
 	return tostring(fn)
+end
+
+local function flatten(value, out)
+	local t = type(value)
+	if t == "string" then
+		out[#out + 1] = value
+		return
+	end
+	if t == "boolean" or t == "number" then
+		out[#out + 1] = tostring(value)
+		return
+	end
+	if t == "table" then
+		out[#out + 1] = "{"
+		local keys = {}
+		for k in pairs(value) do
+			keys[#keys + 1] = k
+		end
+		table.sort(keys, function(a, b)
+			return tostring(a) < tostring(b)
+		end)
+		for i = 1, #keys do
+			local k = keys[i]
+			out[#out + 1] = tostring(k)
+			out[#out + 1] = "="
+			flatten(value[k], out)
+			out[#out + 1] = ","
+		end
+		out[#out + 1] = "}"
+		return
+	end
+	out[#out + 1] = tostring(value)
 end
 
 function M.fingerprint(opts)
@@ -107,22 +73,24 @@ function M.fingerprint(opts)
 		return nil
 	end
 
-	local parts = {
-		transparent = opts.transparent or false,
-		styles = opts.styles or {},
-	}
+	local out = {}
+	out[#out + 1] = opts.transparent and "T" or "F"
+	out[#out + 1] = ";"
+	flatten(opts.styles or {}, out)
+	out[#out + 1] = ";"
 
 	if type(opts.groups) == "function" then
-		parts.groups = "fn:" .. dump_callback(opts.groups)
+		out[#out + 1] = "fn:" .. dump_callback(opts.groups)
 	else
-		parts.groups = opts.groups or {}
+		flatten(opts.groups or {}, out)
 	end
+	out[#out + 1] = ";"
 
 	if has_on_highlights then
-		parts.on_highlights = "fn:" .. dump_callback(opts.on_highlights)
+		out[#out + 1] = "fn:" .. dump_callback(opts.on_highlights)
 	end
 
-	return vim.fn.sha256(serialize.value(parts)):sub(1, 12)
+	return fnv1a(table.concat(out))
 end
 
 function M.setup(opts)
