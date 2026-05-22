@@ -183,40 +183,74 @@ end
 local function load_cache(name, fingerprint)
 	local path = compiler.cache_path(name, fingerprint)
 
-	local apply = cache_loaders[path]
-	if not apply then
+	local entry = cache_loaders[path]
+	if not entry then
 		if not uv.fs_stat(path) then
 			return nil
 		end
 
-		local ok, loader = pcall(dofile, path)
+		local ok, groups, apply = pcall(dofile, path)
 		if not ok then
-			return nil, loader
+			return nil, groups
 		end
 
-		if type(loader) ~= "function" then
+		if type(apply) ~= "function" then
+			apply = groups
+			groups = nil
+		end
+
+		if type(apply) ~= "function" then
 			return nil, "compiled cache did not return an apply function"
 		end
 
-		apply = loader
-		cache_loaders[path] = apply
+		entry = { apply = apply, groups = type(groups) == "table" and groups or nil }
+		cache_loaders[path] = entry
 	end
 
-	local ok, err = pcall(apply)
+	local ok, err = pcall(entry.apply)
 	if ok then
-		return path
+		return path, entry.groups
 	end
 
 	return nil, err
 end
 
-local function clear_highlights()
+local function full_clear()
 	vim.g.colors_name = nil
 	vim.cmd("highlight clear")
 
 	if vim.fn.exists("syntax_on") == 1 then
 		vim.cmd("syntax reset")
 	end
+end
+
+local function diff_reset(prev_groups, new_groups)
+	if prev_groups == nil then
+		return
+	end
+
+	local keep = {}
+	if new_groups then
+		for i = 1, #new_groups do
+			keep[new_groups[i]] = true
+		end
+	end
+
+	local set = vim.api.nvim_set_hl
+	for i = 1, #prev_groups do
+		local group = prev_groups[i]
+		if not keep[group] then
+			set(0, group, {})
+		end
+	end
+end
+
+local function groups_of(highlights)
+	local list = {}
+	for group in pairs(highlights) do
+		list[#list + 1] = group
+	end
+	return list
 end
 
 function M.apply(theme)
@@ -250,20 +284,32 @@ function M.load(name, opts)
 		return last_loaded.result
 	end
 
-	if opts.clear ~= false then
-		clear_highlights()
+	local prev_groups = last_loaded and last_loaded.groups or nil
+
+	if opts.clear == true then
+		full_clear()
+		prev_groups = nil
+	elseif last_loaded == nil and opts.clear ~= false then
+		full_clear()
+		prev_groups = nil
 	end
 
 	if options.cache ~= false then
-		local cache_path = load_cache(name, fingerprint)
+		local cache_path, cache_groups = load_cache(name, fingerprint)
 		if cache_path then
+			diff_reset(prev_groups, cache_groups)
 			vim.g.colors_name = name
 			local result = {
 				name = name,
 				cache_path = cache_path,
 				cached = true,
 			}
-			last_loaded = { name = name, fingerprint = fingerprint, result = result }
+			last_loaded = {
+				name = name,
+				fingerprint = fingerprint,
+				result = result,
+				groups = cache_groups,
+			}
 			return result
 		end
 	end
@@ -277,6 +323,9 @@ function M.load(name, opts)
 		highlights = prepare_highlights(theme, options, name),
 	}
 
+	local new_groups = groups_of(prepared.highlights)
+	diff_reset(prev_groups, new_groups)
+
 	M.apply(prepared)
 	vim.g.colors_name = prepared.name
 
@@ -284,7 +333,12 @@ function M.load(name, opts)
 		compiler.compile(name, prepared, fingerprint)
 	end
 
-	last_loaded = { name = name, fingerprint = fingerprint, result = prepared }
+	last_loaded = {
+		name = name,
+		fingerprint = fingerprint,
+		result = prepared,
+		groups = new_groups,
+	}
 	return prepared
 end
 

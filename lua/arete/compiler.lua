@@ -3,7 +3,7 @@ local M = {}
 local serialize = require("arete.serialize")
 local uv = vim.uv or vim.loop
 
-local cache_version = 3
+local cache_version = 4
 local theme_name_pattern = "^[%w_.-]+$"
 local fingerprint_pattern = "^[%w]+$"
 
@@ -60,14 +60,21 @@ function M.compile(name, theme, fingerprint)
 		error("arete: compile expects a theme table with highlights", 2)
 	end
 
+	local groups = {}
+	for group in pairs(theme.highlights) do
+		groups[#groups + 1] = group
+	end
+	table.sort(groups)
+
 	local lines = {}
 
 	if theme.terminal then
 		lines[#lines + 1] = ("local terminal=%s"):format(serialize.value(theme.terminal))
 	end
 
+	lines[#lines + 1] = ("local groups=%s"):format(serialize.value(groups))
 	lines[#lines + 1] = ("local highlights=%s"):format(serialize.value(theme.highlights))
-	lines[#lines + 1] = "return function()"
+	lines[#lines + 1] = "local apply=function()"
 	lines[#lines + 1] = "vim.o.termguicolors=true"
 
 	if theme.background then
@@ -80,10 +87,12 @@ function M.compile(name, theme, fingerprint)
 		lines[#lines + 1] = "end"
 	end
 
+	lines[#lines + 1] = "local set=vim.api.nvim_set_hl"
 	lines[#lines + 1] = "for group,spec in pairs(highlights) do"
-	lines[#lines + 1] = "vim.api.nvim_set_hl(0,group,spec)"
+	lines[#lines + 1] = "set(0,group,spec)"
 	lines[#lines + 1] = "end"
 	lines[#lines + 1] = "end"
+	lines[#lines + 1] = "return groups,apply"
 
 	local chunk, load_err = loadstring(table.concat(lines, "\n"), "arete:" .. name)
 	if not chunk then
