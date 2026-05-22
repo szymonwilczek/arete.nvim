@@ -24,6 +24,58 @@ local function clone_highlights(highlights)
 	return copy
 end
 
+local function resolve_link(highlights, group, seen)
+	local spec = highlights[group]
+	if spec == nil or spec.link == nil then
+		return spec
+	end
+
+	seen = seen or {}
+	if seen[group] then
+		return nil
+	end
+	seen[group] = true
+
+	return resolve_link(highlights, spec.link, seen)
+end
+
+local function merge_style(highlights, group, style)
+	local current = highlights[group]
+	if current == nil then
+		highlights[group] = vim.deepcopy(style)
+		return
+	end
+
+	if current.link then
+		local resolved = resolve_link(highlights, current.link)
+		local base = resolved and vim.deepcopy(resolved) or {}
+		for key, value in pairs(style) do
+			base[key] = value
+		end
+		highlights[group] = base
+		return
+	end
+
+	for key, value in pairs(style) do
+		current[key] = value
+	end
+end
+
+local function apply_styles(highlights, styles)
+	if styles == nil or next(styles) == nil then
+		return
+	end
+
+	for category, style in pairs(styles) do
+		local groups = config.style_groups[category]
+		if groups and type(style) == "table" then
+			for _, group in ipairs(groups) do
+				merge_style(highlights, group, style)
+			end
+		end
+	end
+end
+
 local function apply_transparent(highlights, transparent)
 	if not transparent then
 		return
@@ -42,6 +94,7 @@ local function prepare_highlights(theme, opts)
 	local highlights = clone_highlights(theme.highlights)
 
 	apply_transparent(highlights, opts.transparent)
+	apply_styles(highlights, opts.styles)
 
 	return highlights
 end
