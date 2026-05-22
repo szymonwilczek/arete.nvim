@@ -5,6 +5,7 @@ local config = require("arete.config")
 local uv = vim.uv or vim.loop
 
 local cache_loaders = {}
+local last_loaded = nil
 local theme_name_pattern = "^[%w_.-]+$"
 
 local function merged_options(opts)
@@ -239,6 +240,16 @@ function M.load(name, opts)
 	local options = merged_options(opts)
 	local fingerprint = config.fingerprint(options)
 
+	if
+		not opts.force
+		and last_loaded ~= nil
+		and last_loaded.name == name
+		and last_loaded.fingerprint == fingerprint
+		and vim.g.colors_name == name
+	then
+		return last_loaded.result
+	end
+
 	if opts.clear ~= false then
 		clear_highlights()
 	end
@@ -247,11 +258,13 @@ function M.load(name, opts)
 		local cache_path = load_cache(name, fingerprint)
 		if cache_path then
 			vim.g.colors_name = name
-			return {
+			local result = {
 				name = name,
 				cache_path = cache_path,
 				cached = true,
 			}
+			last_loaded = { name = name, fingerprint = fingerprint, result = result }
+			return result
 		end
 	end
 
@@ -271,6 +284,7 @@ function M.load(name, opts)
 		compiler.compile(name, prepared, fingerprint)
 	end
 
+	last_loaded = { name = name, fingerprint = fingerprint, result = prepared }
 	return prepared
 end
 
