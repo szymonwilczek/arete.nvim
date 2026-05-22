@@ -14,16 +14,28 @@ end
 local function load_theme(name)
 	assert_theme_name(name)
 
-	local ok, theme = pcall(require, "arete.themes." .. name)
-	if not ok then
-		error(("arete: could not load theme %q: %s"):format(name, theme), 2)
+	local modules = { "arete.themes." .. name }
+
+	local family = name:match("^([%w]+)%-")
+	if family then
+		modules[#modules + 1] = ("arete.themes.%s.%s"):format(family, name)
 	end
 
-	if type(theme) ~= "table" or type(theme.highlights) ~= "table" then
-		error(("arete: theme %q must return a table with a highlights table"):format(name), 2)
+	local errors = {}
+	for _, module in ipairs(modules) do
+		local ok, theme = pcall(require, module)
+		if ok then
+			if type(theme) ~= "table" or type(theme.highlights) ~= "table" then
+				error(("arete: theme %q must return a table with a highlights table"):format(name), 2)
+			end
+
+			return theme
+		end
+
+		errors[#errors + 1] = ("%s: %s"):format(module, theme)
 	end
 
-	return theme
+	error(("arete: could not load theme %q:\n%s"):format(name, table.concat(errors, "\n")), 2)
 end
 
 local function load_cache(name)
