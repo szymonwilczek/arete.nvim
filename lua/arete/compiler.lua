@@ -3,7 +3,7 @@ local M = {}
 local serialize = require("arete.serialize")
 local uv = vim.uv or vim.loop
 
-local cache_version = 2
+local cache_version = 3
 local theme_name_pattern = "^[%w_.-]+$"
 
 local function assert_theme_name(name)
@@ -44,6 +44,12 @@ function M.compile(name, theme)
 
 	local lines = {}
 
+	if theme.terminal then
+		lines[#lines + 1] = ("local terminal=%s"):format(serialize.value(theme.terminal))
+	end
+
+	lines[#lines + 1] = ("local highlights=%s"):format(serialize.value(theme.highlights))
+	lines[#lines + 1] = "return function()"
 	lines[#lines + 1] = "vim.o.termguicolors=true"
 
 	if theme.background then
@@ -51,15 +57,14 @@ function M.compile(name, theme)
 	end
 
 	if theme.terminal then
-		lines[#lines + 1] = ("local terminal=%s"):format(serialize.value(theme.terminal))
 		lines[#lines + 1] = "for index,color in pairs(terminal) do"
 		lines[#lines + 1] = "vim.g['terminal_color_'..index]=color"
 		lines[#lines + 1] = "end"
 	end
 
-	lines[#lines + 1] = ("local highlights=%s"):format(serialize.value(theme.highlights))
 	lines[#lines + 1] = "for group,spec in pairs(highlights) do"
 	lines[#lines + 1] = "vim.api.nvim_set_hl(0,group,spec)"
+	lines[#lines + 1] = "end"
 	lines[#lines + 1] = "end"
 
 	local chunk, load_err = loadstring(table.concat(lines, "\n"), "arete:" .. name)

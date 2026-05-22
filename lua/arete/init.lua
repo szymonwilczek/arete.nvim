@@ -3,6 +3,7 @@ local M = {}
 local compiler = require("arete.compiler")
 local uv = vim.uv or vim.loop
 
+local cache_loaders = {}
 local theme_name_pattern = "^[%w_.-]+$"
 
 local function assert_theme_name(name)
@@ -45,7 +46,22 @@ local function load_cache(name)
 		return nil
 	end
 
-	local ok, err = pcall(dofile, path)
+	local apply = cache_loaders[path]
+	if not apply then
+		local ok, loader = pcall(dofile, path)
+		if not ok then
+			return nil, loader
+		end
+
+		if type(loader) ~= "function" then
+			return nil, "compiled cache did not return an apply function"
+		end
+
+		apply = loader
+		cache_loaders[path] = apply
+	end
+
+	local ok, err = pcall(apply)
 	if ok then
 		return path
 	end
