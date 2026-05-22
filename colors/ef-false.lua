@@ -1,1 +1,1 @@
-require("arete").load("ef-false")
+require("arete.fast")("ef-false")

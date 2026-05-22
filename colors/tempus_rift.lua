@@ -1,1 +1,1 @@
-require("arete").load("tempus_rift")
+require("arete.fast")("tempus_rift")

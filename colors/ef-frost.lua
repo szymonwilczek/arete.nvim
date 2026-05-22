@@ -1,1 +1,1 @@
-require("arete").load("ef-frost")
+require("arete.fast")("ef-frost")

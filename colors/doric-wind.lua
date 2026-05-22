@@ -1,1 +1,1 @@
-require("arete").load("doric-wind")
+require("arete.fast")("doric-wind")

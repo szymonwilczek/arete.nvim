@@ -1,1 +1,1 @@
-require("arete").load("doric-water")
+require("arete.fast")("doric-water")

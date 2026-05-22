@@ -1,1 +1,1 @@
-require("arete").load("prot16-cyprium-dark")
+require("arete.fast")("prot16-cyprium-dark")

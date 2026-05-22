@@ -1,1 +1,1 @@
-require("arete").load("modus-vivendi-deuteranopia")
+require("arete.fast")("modus-vivendi-deuteranopia")

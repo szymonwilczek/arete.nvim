@@ -1,1 +1,1 @@
-require("arete").load("prot16-seabed-light")
+require("arete.fast")("prot16-seabed-light")

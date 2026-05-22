@@ -73,7 +73,7 @@ local function import_theme(ef, name)
 	end, { apply = false })
 
 	extractor.write_theme(name, theme, { root = theme_root })
-	write_file(colors_root .. "/" .. name .. ".lua", ('require("arete").load("%s")\n'):format(name))
+	write_file(colors_root .. "/" .. name .. ".lua", ('require("arete.fast")("%s")\n'):format(name))
 
 	return theme
 end
@@ -92,7 +92,7 @@ end
 write_file(
 	colors_root .. "/ef-theme.lua",
 	[[local theme = vim.o.background == "light" and "ef-spring" or "ef-winter"
-require("arete").load(theme)
+require("arete.fast")(theme)
 ]]
 )
 

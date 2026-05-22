@@ -1,1 +1,1 @@
-require("arete").load("ef-duo-dark")
+require("arete.fast")("ef-duo-dark")

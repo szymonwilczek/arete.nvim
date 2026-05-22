@@ -1,1 +1,1 @@
-require("arete").load("prot16-overgrowth-light")
+require("arete.fast")("prot16-overgrowth-light")

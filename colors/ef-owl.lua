@@ -1,1 +1,1 @@
-require("arete").load("ef-owl")
+require("arete.fast")("ef-owl")

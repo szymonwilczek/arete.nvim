@@ -1,1 +1,1 @@
-require("arete").load("ef-reverie")
+require("arete.fast")("ef-reverie")

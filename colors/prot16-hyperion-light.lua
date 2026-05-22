@@ -1,1 +1,1 @@
-require("arete").load("prot16-hyperion-light")
+require("arete.fast")("prot16-hyperion-light")

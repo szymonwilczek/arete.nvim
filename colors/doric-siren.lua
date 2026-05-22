@@ -1,1 +1,1 @@
-require("arete").load("doric-siren")
+require("arete.fast")("doric-siren")

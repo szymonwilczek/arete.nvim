@@ -1,1 +1,1 @@
-require("arete").load("ef-spring")
+require("arete.fast")("ef-spring")

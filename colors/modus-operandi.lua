@@ -1,1 +1,1 @@
-require("arete").load("modus-operandi")
+require("arete.fast")("modus-operandi")

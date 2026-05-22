@@ -1,1 +1,1 @@
-require("arete").load("doric-mermaid")
+require("arete.fast")("doric-mermaid")

@@ -1,1 +1,1 @@
-require("arete").load("doric-obsidian")
+require("arete.fast")("doric-obsidian")

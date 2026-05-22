@@ -260,7 +260,7 @@
 		(funcall arete-emacs-theme-terminal-colors-function theme)))
       (insert ",\n}\n"))
     (with-temp-file colors-path
-      (insert (format "require(\"arete\").load(\"%s\")\n" name)))))
+      (insert (format "require(\"arete.fast\")(\"%s\")\n" name)))))
 
 (defun arete-emacs-theme-import-theme (family theme background)
   (setq arete-emacs-theme-captured-faces nil)

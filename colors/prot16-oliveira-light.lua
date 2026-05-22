@@ -1,1 +1,1 @@
-require("arete").load("prot16-oliveira-light")
+require("arete.fast")("prot16-oliveira-light")

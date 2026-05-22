@@ -140,7 +140,7 @@ for _, path in ipairs(discover_themes()) do
 	local theme = source_theme(path)
 
 	write_file(theme_root .. "/" .. theme.name .. ".lua", "return " .. serialize.pretty(theme) .. "\n")
-	write_file(colors_root .. "/" .. theme.name .. ".lua", ('require("arete").load("%s")\n'):format(theme.name))
+	write_file(colors_root .. "/" .. theme.name .. ".lua", ('require("arete.fast")("%s")\n'):format(theme.name))
 
 	imported[#imported + 1] = theme.name
 end

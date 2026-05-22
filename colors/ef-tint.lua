@@ -1,1 +1,1 @@
-require("arete").load("ef-tint")
+require("arete.fast")("ef-tint")

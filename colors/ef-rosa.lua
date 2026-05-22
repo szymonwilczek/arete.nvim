@@ -1,1 +1,1 @@
-require("arete").load("ef-rosa")
+require("arete.fast")("ef-rosa")

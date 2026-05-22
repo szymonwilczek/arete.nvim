@@ -1,1 +1,1 @@
-require("arete").load("standard-adwaita")
+require("arete.fast")("standard-adwaita")

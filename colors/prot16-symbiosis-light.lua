@@ -1,1 +1,1 @@
-require("arete").load("prot16-symbiosis-light")
+require("arete.fast")("prot16-symbiosis-light")

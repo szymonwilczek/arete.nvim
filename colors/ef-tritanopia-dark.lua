@@ -1,1 +1,1 @@
-require("arete").load("ef-tritanopia-dark")
+require("arete.fast")("ef-tritanopia-dark")

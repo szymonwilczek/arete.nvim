@@ -1,1 +1,1 @@
-require("arete").load("ef-fig")
+require("arete.fast")("ef-fig")

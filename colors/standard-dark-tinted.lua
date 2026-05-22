@@ -1,1 +1,1 @@
-require("arete").load("standard-dark-tinted")
+require("arete.fast")("standard-dark-tinted")

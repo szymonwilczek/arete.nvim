@@ -1,1 +1,1 @@
-require("arete").load("ef-deuteranopia-light")
+require("arete.fast")("ef-deuteranopia-light")

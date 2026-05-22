@@ -1,1 +1,1 @@
-require("arete").load("prot16-flowerbed-light")
+require("arete.fast")("prot16-flowerbed-light")

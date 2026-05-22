@@ -1,1 +1,1 @@
-require("arete").load("modus-operandi-tinted")
+require("arete.fast")("modus-operandi-tinted")

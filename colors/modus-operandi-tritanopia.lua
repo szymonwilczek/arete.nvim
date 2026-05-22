@@ -1,1 +1,1 @@
-require("arete").load("modus-operandi-tritanopia")
+require("arete.fast")("modus-operandi-tritanopia")

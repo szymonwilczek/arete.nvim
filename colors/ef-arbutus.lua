@@ -1,1 +1,1 @@
-require("arete").load("ef-arbutus")
+require("arete.fast")("ef-arbutus")

@@ -1,1 +1,1 @@
-require("arete").load("doric-beach")
+require("arete.fast")("doric-beach")

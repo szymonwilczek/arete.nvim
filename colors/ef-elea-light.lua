@@ -1,1 +1,1 @@
-require("arete").load("ef-elea-light")
+require("arete.fast")("ef-elea-light")

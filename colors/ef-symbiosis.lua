@@ -1,1 +1,1 @@
-require("arete").load("ef-symbiosis")
+require("arete.fast")("ef-symbiosis")

@@ -1,1 +1,1 @@
-require("arete").load("prot16-equinox-light")
+require("arete.fast")("prot16-equinox-light")

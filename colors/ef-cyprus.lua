@@ -1,1 +1,1 @@
-require("arete").load("ef-cyprus")
+require("arete.fast")("ef-cyprus")

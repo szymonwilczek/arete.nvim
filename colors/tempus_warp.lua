@@ -1,1 +1,1 @@
-require("arete").load("tempus_warp")
+require("arete.fast")("tempus_warp")

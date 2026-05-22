@@ -1,1 +1,1 @@
-require("arete").load("ef-melissa-dark")
+require("arete.fast")("ef-melissa-dark")

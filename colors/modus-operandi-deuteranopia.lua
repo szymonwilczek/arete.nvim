@@ -1,1 +1,1 @@
-require("arete").load("modus-operandi-deuteranopia")
+require("arete.fast")("modus-operandi-deuteranopia")

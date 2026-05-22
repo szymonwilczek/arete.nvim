@@ -1,1 +1,1 @@
-require("arete").load("doric-light")
+require("arete.fast")("doric-light")

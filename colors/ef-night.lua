@@ -1,1 +1,1 @@
-require("arete").load("ef-night")
+require("arete.fast")("ef-night")

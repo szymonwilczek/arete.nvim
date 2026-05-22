@@ -1,1 +1,1 @@
-require("arete").load("doric-coral")
+require("arete.fast")("doric-coral")

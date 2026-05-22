@@ -1,1 +1,1 @@
-require("arete").load("doric-copper")
+require("arete.fast")("doric-copper")

@@ -1,1 +1,1 @@
-require("arete").load("doric-earth")
+require("arete.fast")("doric-earth")

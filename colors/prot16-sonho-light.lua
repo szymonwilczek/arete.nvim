@@ -1,1 +1,1 @@
-require("arete").load("prot16-sonho-light")
+require("arete.fast")("prot16-sonho-light")

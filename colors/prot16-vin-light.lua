@@ -1,1 +1,1 @@
-require("arete").load("prot16-vin-light")
+require("arete.fast")("prot16-vin-light")

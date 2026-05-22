@@ -1,1 +1,1 @@
-require("arete").load("arete-fixture")
+require("arete.fast")("arete-fixture")

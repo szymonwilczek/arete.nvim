@@ -1,1 +1,1 @@
-require("arete").load("doric-plum")
+require("arete.fast")("doric-plum")

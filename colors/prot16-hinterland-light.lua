@@ -1,1 +1,1 @@
-require("arete").load("prot16-hinterland-light")
+require("arete.fast")("prot16-hinterland-light")

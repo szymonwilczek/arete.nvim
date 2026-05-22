@@ -1,1 +1,1 @@
-require("arete").load("ef-dream")
+require("arete.fast")("ef-dream")

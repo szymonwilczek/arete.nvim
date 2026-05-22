@@ -1,1 +1,1 @@
-require("arete").load("prot16-noir-light")
+require("arete.fast")("prot16-noir-light")

@@ -1,1 +1,1 @@
-require("arete").load("doric-magma")
+require("arete.fast")("doric-magma")

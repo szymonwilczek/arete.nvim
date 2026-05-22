@@ -1,1 +1,1 @@
-require("arete").load("doric-valley")
+require("arete.fast")("doric-valley")

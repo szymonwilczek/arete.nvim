@@ -1,1 +1,1 @@
-require("arete").load("ef-summer")
+require("arete.fast")("ef-summer")

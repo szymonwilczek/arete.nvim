@@ -1,1 +1,1 @@
-require("arete").load("modus-vivendi-tinted")
+require("arete.fast")("modus-vivendi-tinted")

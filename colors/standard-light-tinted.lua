@@ -1,1 +1,1 @@
-require("arete").load("standard-light-tinted")
+require("arete.fast")("standard-light-tinted")

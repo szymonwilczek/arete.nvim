@@ -1,1 +1,1 @@
-require("arete").load("standard-wombat")
+require("arete.fast")("standard-wombat")

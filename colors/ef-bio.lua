@@ -1,1 +1,1 @@
-require("arete").load("ef-bio")
+require("arete.fast")("ef-bio")

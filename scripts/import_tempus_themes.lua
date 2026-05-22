@@ -111,7 +111,7 @@ for _, path in ipairs(discover_themes()) do
 	local name = assert(theme.name, "source theme did not set g:colors_name")
 
 	write_file(theme_root .. "/" .. name .. ".lua", "return " .. serialize.pretty(theme) .. "\n")
-	write_file(colors_root .. "/" .. name .. ".lua", ('require("arete").load("%s")\n'):format(name))
+	write_file(colors_root .. "/" .. name .. ".lua", ('require("arete.fast")("%s")\n'):format(name))
 
 	imported[#imported + 1] = name
 end

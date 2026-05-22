@@ -1,1 +1,1 @@
-require("arete").load("tempus_dusk")
+require("arete.fast")("tempus_dusk")

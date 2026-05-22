@@ -1,1 +1,1 @@
-require("arete").load("prot16-gaia-light")
+require("arete.fast")("prot16-gaia-light")

@@ -1,1 +1,1 @@
-require("arete").load("ef-kassio")
+require("arete.fast")("ef-kassio")
