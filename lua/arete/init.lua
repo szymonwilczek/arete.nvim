@@ -357,13 +357,14 @@ function M.setup(opts)
 		end
 	end
 
-	config.setup(forwarded)
+	local merged = config.setup(forwarded)
+	vim.g.arete_setup = config.fingerprint(merged) or true
 
 	if type(theme) == "string" then
 		M.load(theme)
 	end
 
-	return config.get()
+	return merged
 end
 
 function M.get_theme(name)
