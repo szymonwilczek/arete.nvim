@@ -17,7 +17,7 @@ local function load_theme(name)
 
 	local modules = { "arete.themes." .. name }
 
-	local family = name:match("^([%w]+)%-")
+	local family = name:match("^([%w]+)[-_]")
 	if family then
 		modules[#modules + 1] = ("arete.themes.%s.%s"):format(family, name)
 	end
