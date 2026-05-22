@@ -22,9 +22,10 @@ points will live under `colors/` and delegate to `require("arete").load()`.
 ## Status
 
 The repository currently contains the engine skeleton, a bytecode cache compiler,
-and an internal fixture theme used to verify the loading path.
+and imported Ef and Modus theme tables.
 
-Protesilaos theme data has not been imported yet.
+Ef data is generated from the local `ef-themes.nvim` output. Modus data is
+generated from the local Emacs `modus-themes` package.
 
 ## Attribution
 
