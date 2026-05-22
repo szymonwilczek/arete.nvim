@@ -22,10 +22,12 @@ points will live under `colors/` and delegate to `require("arete").load()`.
 ## Status
 
 The repository currently contains the engine skeleton, a bytecode cache compiler,
-and imported Ef and Modus theme tables.
+and imported Ef, Modus, Standard, and Tempus theme tables.
 
-Ef data is generated from the local `ef-themes.nvim` output. Modus data is
-generated from the local Emacs `modus-themes` package.
+Ef data is generated from the local `ef-themes.nvim` output, with newer missing
+themes filled from the Emacs `ef-themes` package. Modus and Standard data are
+generated from their Emacs packages. Tempus data is generated from the official
+Vim colorscheme files.
 
 ## Attribution
 
