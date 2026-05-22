@@ -22,17 +22,23 @@ local function root()
 end
 
 local function fast(name)
-  if vim.g.arete_setup ~= nil then
+  local fp = vim.g.arete_setup
+  if fp == true then
     return fallback(name)
   end
 
-  if last and last.name == name and vim.g.colors_name == name then
+  if last and last.name == name and last.fp == fp and vim.g.colors_name == name then
     return
   end
 
-  local entry = entries[name]
+  local key = name
+  if type(fp) == "string" then
+    key = name .. "@" .. fp
+  end
+
+  local entry = entries[key]
   if entry == nil then
-    local path = root() .. name .. ".luac"
+    local path = root() .. key .. ".luac"
     if not uv.fs_stat(path) then
       return fallback(name)
     end
@@ -41,7 +47,7 @@ local function fast(name)
       return fallback(name)
     end
     entry = { groups = groups, apply = apply }
-    entries[name] = entry
+    entries[key] = entry
   end
 
   if last and last.groups and entry.groups then
@@ -61,7 +67,7 @@ local function fast(name)
 
   entry.apply()
   vim.g.colors_name = name
-  last = { name = name, groups = entry.groups }
+  last = { name = name, groups = entry.groups, fp = fp }
 end
 
 return fast
