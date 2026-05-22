@@ -1,6 +1,10 @@
 return {
 	name = "arete-fixture",
 	background = "dark",
+	terminal = {
+		[0] = "#1c1c1c",
+		[7] = "#d7d7d7",
+	},
 	highlights = {
 		Comment = { fg = "#9a9a9a", italic = true },
 		CursorLine = { bg = "#262626" },

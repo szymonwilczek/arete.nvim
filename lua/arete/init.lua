@@ -55,6 +55,10 @@ function M.apply(theme)
 		vim.o.background = theme.background
 	end
 
+	for index, color in pairs(theme.terminal or {}) do
+		vim.g["terminal_color_" .. index] = color
+	end
+
 	for group, spec in pairs(theme.highlights) do
 		vim.api.nvim_set_hl(0, group, spec)
 	end

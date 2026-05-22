@@ -48,6 +48,13 @@ function M.compile(name, theme)
 		lines[#lines + 1] = ("vim.o.background=%s"):format(serialize.value(theme.background))
 	end
 
+	if theme.terminal then
+		lines[#lines + 1] = ("local terminal=%s"):format(serialize.value(theme.terminal))
+		lines[#lines + 1] = "for index,color in pairs(terminal) do"
+		lines[#lines + 1] = "vim.g['terminal_color_'..index]=color"
+		lines[#lines + 1] = "end"
+	end
+
 	lines[#lines + 1] = ("local highlights=%s"):format(serialize.value(theme.highlights))
 	lines[#lines + 1] = "for group,spec in pairs(highlights) do"
 	lines[#lines + 1] = "vim.api.nvim_set_hl(0,group,spec)"

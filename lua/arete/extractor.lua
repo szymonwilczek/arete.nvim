@@ -31,6 +31,19 @@ local function write_file(path, data)
 	end
 end
 
+local function capture_terminal_colors()
+	local terminal = {}
+
+	for index = 0, 15 do
+		local color = vim.g["terminal_color_" .. index]
+		if color ~= nil then
+			terminal[index] = color
+		end
+	end
+
+	return terminal
+end
+
 function M.capture(loader, opts)
 	assert_loader(loader)
 	opts = opts or {}
@@ -68,6 +81,7 @@ function M.extract(name, loader, opts)
 	return {
 		name = name,
 		background = vim.o.background,
+		terminal = capture_terminal_colors(),
 		highlights = highlights,
 	}
 end
@@ -90,6 +104,7 @@ function M.write_theme(name, theme, opts)
 	local output = {
 		name = theme.name or name,
 		background = theme.background,
+		terminal = theme.terminal,
 		highlights = theme.highlights,
 	}
 
