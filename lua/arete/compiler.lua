@@ -5,10 +5,21 @@ local uv = vim.uv or vim.loop
 
 local cache_version = 3
 local theme_name_pattern = "^[%w_.-]+$"
+local fingerprint_pattern = "^[%w]+$"
 
 local function assert_theme_name(name)
 	if type(name) ~= "string" or name == "" or not name:match(theme_name_pattern) then
 		error("arete: theme name must be a non-empty module-safe string", 3)
+	end
+end
+
+local function assert_fingerprint(fingerprint)
+	if fingerprint == nil then
+		return
+	end
+
+	if type(fingerprint) ~= "string" or fingerprint == "" or not fingerprint:match(fingerprint_pattern) then
+		error("arete: fingerprint must be an alphanumeric string", 3)
 	end
 end
 
@@ -30,13 +41,20 @@ function M.cache_root()
 	return vim.fn.stdpath("cache") .. "/arete"
 end
 
-function M.cache_path(name)
+function M.cache_path(name, fingerprint)
 	assert_theme_name(name)
+	assert_fingerprint(fingerprint)
+
+	if fingerprint then
+		return ("%s/%d/%s@%s.luac"):format(M.cache_root(), cache_version, name, fingerprint)
+	end
+
 	return ("%s/%d/%s.luac"):format(M.cache_root(), cache_version, name)
 end
 
-function M.compile(name, theme)
+function M.compile(name, theme, fingerprint)
 	assert_theme_name(name)
+	assert_fingerprint(fingerprint)
 
 	if type(theme) ~= "table" or type(theme.highlights) ~= "table" then
 		error("arete: compile expects a theme table with highlights", 2)
@@ -75,7 +93,7 @@ function M.compile(name, theme)
 	local cache_dir = ("%s/%d"):format(M.cache_root(), cache_version)
 	vim.fn.mkdir(cache_dir, "p")
 
-	local path = M.cache_path(name)
+	local path = M.cache_path(name, fingerprint)
 	write_file(path, string.dump(chunk))
 
 	return path
