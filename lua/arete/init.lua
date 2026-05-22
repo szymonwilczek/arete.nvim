@@ -289,9 +289,6 @@ function M.load(name, opts)
 	if opts.clear == true then
 		full_clear()
 		prev_groups = nil
-	elseif last_loaded == nil and opts.clear ~= false then
-		full_clear()
-		prev_groups = nil
 	end
 
 	if options.cache ~= false then
