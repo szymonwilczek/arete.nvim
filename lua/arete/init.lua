@@ -313,21 +313,28 @@ function M.load(name, opts)
 
 	local theme = load_theme(name)
 
-	local prepared = {
-		name = theme.name or name,
-		background = theme.background,
-		terminal = theme.terminal,
-		highlights = prepare_highlights(theme, options, name),
-	}
+	local prepared
+	if fingerprint == nil then
+		prepared = theme
+	else
+		prepared = {
+			name = theme.name or name,
+			background = theme.background,
+			terminal = theme.terminal,
+			highlights = prepare_highlights(theme, options, name),
+		}
+	end
 
 	local new_groups = groups_of(prepared.highlights)
 	diff_reset(prev_groups, new_groups)
 
 	M.apply(prepared)
-	vim.g.colors_name = prepared.name
+	vim.g.colors_name = prepared.name or name
 
 	if options.cache ~= false and opts.compile ~= false then
-		compiler.compile(name, prepared, fingerprint)
+		vim.schedule(function()
+			compiler.compile(name, prepared, fingerprint)
+		end)
 	end
 
 	last_loaded = {
