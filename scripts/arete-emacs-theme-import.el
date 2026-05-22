@@ -107,6 +107,9 @@
 
 (defvar arete-emacs-theme-captured-faces nil)
 
+(defvar arete-emacs-theme-terminal-colors-function
+  #'arete-emacs-theme-modus-terminal-colors)
+
 (defun arete-emacs-theme-lua-string (value)
   (format "%S" value))
 
@@ -189,7 +192,7 @@
       (push (cons "underline" t) spec))
     (nreverse spec)))
 
-(defun arete-emacs-theme-terminal-colors (theme)
+(defun arete-emacs-theme-modus-terminal-colors (theme)
   (let ((names '(fg-term-black fg-term-red fg-term-green fg-term-yellow
                   fg-term-blue fg-term-magenta fg-term-cyan fg-term-white
                   fg-term-black-bright fg-term-red-bright fg-term-green-bright
@@ -200,6 +203,32 @@
       for name in names
       for color = (modus-themes-get-color-value name nil theme)
       when (stringp color)
+      do (push (cons index color) colors))
+    (nreverse colors)))
+
+(defun arete-emacs-theme-color-to-hex (value)
+  (cond
+    ((not (stringp value)) nil)
+    ((string-prefix-p "#" value) value)
+    (t
+      (when-let* ((rgb (color-name-to-rgb value)))
+	(apply #'color-rgb-to-hex (append rgb '(2)))))))
+
+(defun arete-emacs-theme-face-foreground (face)
+  (arete-emacs-theme-color-to-hex
+    (plist-get (arete-emacs-theme-face-plist face) :foreground)))
+
+(defun arete-emacs-theme-ansi-terminal-colors (_theme)
+  (let ((faces '(ansi-color-black ansi-color-red ansi-color-green ansi-color-yellow
+                  ansi-color-blue ansi-color-magenta ansi-color-cyan ansi-color-white
+                  ansi-color-bright-black ansi-color-bright-red ansi-color-bright-green
+                  ansi-color-bright-yellow ansi-color-bright-blue ansi-color-bright-magenta
+                  ansi-color-bright-cyan ansi-color-bright-white))
+         colors)
+    (cl-loop for index from 0
+      for face in faces
+      for color = (arete-emacs-theme-face-foreground face)
+      when color
       do (push (cons index color) colors))
     (nreverse colors)))
 
@@ -227,7 +256,8 @@
       (insert ",\n\t[\"name\"] = ")
       (insert (arete-emacs-theme-lua-string name))
       (insert ",\n\t[\"terminal\"] = ")
-      (insert (arete-emacs-theme-lua-table (arete-emacs-theme-terminal-colors theme)))
+      (insert (arete-emacs-theme-lua-table
+		(funcall arete-emacs-theme-terminal-colors-function theme)))
       (insert ",\n}\n"))
     (with-temp-file colors-path
       (insert (format "require(\"arete\").load(\"%s\")\n" name)))))
