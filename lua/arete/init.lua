@@ -274,4 +274,32 @@ function M.load(name, opts)
 	return prepared
 end
 
+function M.setup(opts)
+	opts = opts or {}
+
+	local theme = opts.theme
+	local forwarded = {}
+	for key, value in pairs(opts) do
+		if key ~= "theme" then
+			forwarded[key] = value
+		end
+	end
+
+	config.setup(forwarded)
+
+	if type(theme) == "string" then
+		M.load(theme)
+	end
+
+	return config.get()
+end
+
+function M.get_theme(name)
+	return load_theme(name)
+end
+
+function M.options()
+	return config.get()
+end
+
 return M
