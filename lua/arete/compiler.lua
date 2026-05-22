@@ -1,0 +1,115 @@
+local M = {}
+
+local uv = vim.uv or vim.loop
+
+local cache_version = 1
+local theme_name_pattern = "^[%w_.-]+$"
+
+local function assert_theme_name(name)
+	if type(name) ~= "string" or name == "" or not name:match(theme_name_pattern) then
+		error("arete: theme name must be a non-empty module-safe string", 3)
+	end
+end
+
+local function sorted_keys(tbl)
+	local keys = {}
+	for key in pairs(tbl) do
+		keys[#keys + 1] = key
+	end
+
+	table.sort(keys, function(left, right)
+		if type(left) == type(right) then
+			return left < right
+		end
+
+		return type(left) < type(right)
+	end)
+
+	return keys
+end
+
+local function serialize(value)
+	local kind = type(value)
+
+	if kind == "string" then
+		return ("%q"):format(value)
+	end
+
+	if kind == "number" or kind == "boolean" then
+		return tostring(value)
+	end
+
+	if kind == "table" then
+		local chunks = { "{" }
+
+		for _, key in ipairs(sorted_keys(value)) do
+			chunks[#chunks + 1] = "["
+			chunks[#chunks + 1] = serialize(key)
+			chunks[#chunks + 1] = "]="
+			chunks[#chunks + 1] = serialize(value[key])
+			chunks[#chunks + 1] = ","
+		end
+
+		chunks[#chunks + 1] = "}"
+		return table.concat(chunks)
+	end
+
+	error(("arete: cannot serialize %s values into theme cache"):format(kind), 2)
+end
+
+local function write_file(path, data)
+	local handle, open_err = uv.fs_open(path, "w", 420)
+	if not handle then
+		error(("arete: could not open cache file %s: %s"):format(path, open_err), 2)
+	end
+
+	local ok, write_err = uv.fs_write(handle, data, 0)
+	uv.fs_close(handle)
+
+	if not ok then
+		error(("arete: could not write cache file %s: %s"):format(path, write_err), 2)
+	end
+end
+
+function M.cache_root()
+	return vim.fn.stdpath("cache") .. "/arete"
+end
+
+function M.cache_path(name)
+	assert_theme_name(name)
+	return ("%s/%d/%s.luac"):format(M.cache_root(), cache_version, name)
+end
+
+function M.compile(name, theme)
+	assert_theme_name(name)
+
+	if type(theme) ~= "table" or type(theme.highlights) ~= "table" then
+		error("arete: compile expects a theme table with highlights", 2)
+	end
+
+	local lines = {}
+
+	if theme.background then
+		lines[#lines + 1] = ("vim.o.background=%s"):format(serialize(theme.background))
+	end
+
+	lines[#lines + 1] = ("local highlights=%s"):format(serialize(theme.highlights))
+	lines[#lines + 1] = "for group,spec in pairs(highlights) do"
+	lines[#lines + 1] = "vim.api.nvim_set_hl(0,group,spec)"
+	lines[#lines + 1] = "end"
+
+	local chunk, load_err = loadstring(table.concat(lines, "\n"), "arete:" .. name)
+	if not chunk then
+		error(("arete: could not compile cache source for %s: %s"):format(name, load_err), 2)
+	end
+
+	local cache_dir = ("%s/%d"):format(M.cache_root(), cache_version)
+	vim.fn.mkdir(cache_dir, "p")
+
+	local path = M.cache_path(name)
+	write_file(path, string.dump(chunk))
+
+	return path
+end
+
+return M
