@@ -1,10 +1,50 @@
 local M = {}
 
 local compiler = require("arete.compiler")
+local config = require("arete.config")
 local uv = vim.uv or vim.loop
 
 local cache_loaders = {}
 local theme_name_pattern = "^[%w_.-]+$"
+
+local function merged_options(opts)
+	local base = config.get()
+	if opts == nil then
+		return base
+	end
+
+	return vim.tbl_extend("force", base, opts)
+end
+
+local function clone_highlights(highlights)
+	local copy = {}
+	for group, spec in pairs(highlights) do
+		copy[group] = vim.deepcopy(spec)
+	end
+	return copy
+end
+
+local function apply_transparent(highlights, transparent)
+	if not transparent then
+		return
+	end
+
+	for _, group in ipairs(config.transparent_groups) do
+		local spec = highlights[group]
+		if spec and not spec.link then
+			spec.bg = "NONE"
+			spec.ctermbg = "NONE"
+		end
+	end
+end
+
+local function prepare_highlights(theme, opts)
+	local highlights = clone_highlights(theme.highlights)
+
+	apply_transparent(highlights, opts.transparent)
+
+	return highlights
+end
 
 local function assert_theme_name(name)
 	if type(name) ~= "string" or name == "" or not name:match(theme_name_pattern) then
@@ -39,8 +79,8 @@ local function load_theme(name)
 	error(("arete: could not load theme %q:\n%s"):format(name, table.concat(errors, "\n")), 2)
 end
 
-local function load_cache(name)
-	local path = compiler.cache_path(name)
+local function load_cache(name, fingerprint)
+	local path = compiler.cache_path(name, fingerprint)
 
 	if not uv.fs_stat(path) then
 		return nil
@@ -96,13 +136,15 @@ end
 
 function M.load(name, opts)
 	opts = opts or {}
+	local options = merged_options(opts)
+	local fingerprint = config.fingerprint(options)
 
 	if opts.clear ~= false then
 		clear_highlights()
 	end
 
-	if opts.cache ~= false then
-		local cache_path = load_cache(name)
+	if options.cache ~= false then
+		local cache_path = load_cache(name, fingerprint)
 		if cache_path then
 			vim.g.colors_name = name
 			return {
@@ -115,14 +157,21 @@ function M.load(name, opts)
 
 	local theme = load_theme(name)
 
-	M.apply(theme)
-	vim.g.colors_name = theme.name or name
+	local prepared = {
+		name = theme.name or name,
+		background = theme.background,
+		terminal = theme.terminal,
+		highlights = prepare_highlights(theme, options),
+	}
 
-	if opts.cache ~= false and opts.compile ~= false then
-		compiler.compile(name, theme)
+	M.apply(prepared)
+	vim.g.colors_name = prepared.name
+
+	if options.cache ~= false and opts.compile ~= false then
+		compiler.compile(name, prepared, fingerprint)
 	end
 
-	return theme
+	return prepared
 end
 
 return M
