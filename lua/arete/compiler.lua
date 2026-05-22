@@ -3,7 +3,7 @@ local M = {}
 local serialize = require("arete.serialize")
 local uv = vim.uv or vim.loop
 
-local cache_version = 1
+local cache_version = 2
 local theme_name_pattern = "^[%w_.-]+$"
 
 local function assert_theme_name(name)
@@ -43,6 +43,8 @@ function M.compile(name, theme)
 	end
 
 	local lines = {}
+
+	lines[#lines + 1] = "vim.o.termguicolors=true"
 
 	if theme.background then
 		lines[#lines + 1] = ("vim.o.background=%s"):format(serialize.value(theme.background))

@@ -63,6 +63,8 @@ local function clear_highlights()
 end
 
 function M.apply(theme)
+	vim.o.termguicolors = true
+
 	if theme.background then
 		vim.o.background = theme.background
 	end
