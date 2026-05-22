@@ -1,6 +1,5 @@
 local M = {}
 
-local compiler = require("arete.compiler")
 local config = require("arete.config")
 local uv = vim.uv or vim.loop
 
@@ -15,136 +14,6 @@ local function merged_options(opts)
 	end
 
 	return vim.tbl_extend("force", base, opts)
-end
-
-local function clone_highlights(highlights)
-	local copy = {}
-	for group, spec in pairs(highlights) do
-		copy[group] = vim.deepcopy(spec)
-	end
-	return copy
-end
-
-local function resolve_link(highlights, group, seen)
-	local spec = highlights[group]
-	if spec == nil or spec.link == nil then
-		return spec
-	end
-
-	seen = seen or {}
-	if seen[group] then
-		return nil
-	end
-	seen[group] = true
-
-	return resolve_link(highlights, spec.link, seen)
-end
-
-local function merge_style(highlights, group, style)
-	local current = highlights[group]
-	if current == nil then
-		highlights[group] = vim.deepcopy(style)
-		return
-	end
-
-	if current.link then
-		local resolved = resolve_link(highlights, current.link)
-		local base = resolved and vim.deepcopy(resolved) or {}
-		for key, value in pairs(style) do
-			base[key] = value
-		end
-		highlights[group] = base
-		return
-	end
-
-	for key, value in pairs(style) do
-		current[key] = value
-	end
-end
-
-local function apply_styles(highlights, styles)
-	if styles == nil or next(styles) == nil then
-		return
-	end
-
-	for category, style in pairs(styles) do
-		local groups = config.style_groups[category]
-		if groups and type(style) == "table" then
-			for _, group in ipairs(groups) do
-				merge_style(highlights, group, style)
-			end
-		end
-	end
-end
-
-local function apply_on_highlights(highlights, callback, name)
-	if type(callback) ~= "function" then
-		return
-	end
-
-	local ok, result = pcall(callback, highlights, name)
-	if not ok then
-		error(("arete: on_highlights callback failed: %s"):format(result), 0)
-	end
-
-	if type(result) ~= "table" then
-		return
-	end
-
-	for group, spec in pairs(result) do
-		if type(spec) == "table" then
-			highlights[group] = vim.deepcopy(spec)
-		end
-	end
-end
-
-local function apply_groups(highlights, groups, name)
-	if groups == nil then
-		return
-	end
-
-	local source = groups
-	if type(groups) == "function" then
-		local ok, result = pcall(groups, name)
-		if not ok then
-			error(("arete: groups callback failed: %s"):format(result), 0)
-		end
-		if type(result) ~= "table" then
-			return
-		end
-		source = result
-	end
-
-	for group, spec in pairs(source) do
-		if type(spec) == "table" then
-			highlights[group] = vim.deepcopy(spec)
-		end
-	end
-end
-
-local function apply_transparent(highlights, transparent)
-	if not transparent then
-		return
-	end
-
-	for _, group in ipairs(config.transparent_groups) do
-		local spec = highlights[group]
-		if spec and not spec.link then
-			spec.bg = "NONE"
-			spec.ctermbg = "NONE"
-		end
-	end
-end
-
-local function prepare_highlights(theme, opts, name)
-	local highlights = clone_highlights(theme.highlights)
-
-	apply_transparent(highlights, opts.transparent)
-	apply_styles(highlights, opts.styles)
-	apply_groups(highlights, opts.groups, name)
-	apply_on_highlights(highlights, opts.on_highlights, name)
-
-	return highlights
 end
 
 local function assert_theme_name(name)
@@ -180,8 +49,17 @@ local function load_theme(name)
 	error(("arete: could not load theme %q:\n%s"):format(name, table.concat(errors, "\n")), 2)
 end
 
+local cache_root = nil
+local function cache_path(name, fingerprint)
+	cache_root = cache_root or (vim.fn.stdpath("cache") .. "/arete/4/")
+	if fingerprint then
+		return cache_root .. name .. "@" .. fingerprint .. ".luac"
+	end
+	return cache_root .. name .. ".luac"
+end
+
 local function load_cache(name, fingerprint)
-	local path = compiler.cache_path(name, fingerprint)
+	local path = cache_path(name, fingerprint)
 
 	local entry = cache_loaders[path]
 	if not entry then
@@ -321,7 +199,7 @@ function M.load(name, opts)
 			name = theme.name or name,
 			background = theme.background,
 			terminal = theme.terminal,
-			highlights = prepare_highlights(theme, options, name),
+			highlights = require("arete.pipeline").prepare(theme, options, name),
 		}
 	end
 
@@ -333,7 +211,7 @@ function M.load(name, opts)
 
 	if options.cache ~= false and opts.compile ~= false then
 		vim.schedule(function()
-			compiler.compile(name, prepared, fingerprint)
+			require("arete.compiler").compile(name, prepared, fingerprint)
 		end)
 	end
 
@@ -358,7 +236,7 @@ function M.setup(opts)
 	end
 
 	local merged = config.setup(forwarded)
-	vim.g.arete_setup = config.fingerprint(merged) or true
+	vim.g.arete_setup = config.fingerprint(merged)
 
 	if type(theme) == "string" then
 		M.load(theme)
