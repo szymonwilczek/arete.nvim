@@ -76,6 +76,27 @@ local function apply_styles(highlights, styles)
 	end
 end
 
+local function apply_on_highlights(highlights, callback, name)
+	if type(callback) ~= "function" then
+		return
+	end
+
+	local ok, result = pcall(callback, highlights, name)
+	if not ok then
+		error(("arete: on_highlights callback failed: %s"):format(result), 0)
+	end
+
+	if type(result) ~= "table" then
+		return
+	end
+
+	for group, spec in pairs(result) do
+		if type(spec) == "table" then
+			highlights[group] = vim.deepcopy(spec)
+		end
+	end
+end
+
 local function apply_groups(highlights, groups, name)
 	if groups == nil then
 		return
@@ -120,6 +141,7 @@ local function prepare_highlights(theme, opts, name)
 	apply_transparent(highlights, opts.transparent)
 	apply_styles(highlights, opts.styles)
 	apply_groups(highlights, opts.groups, name)
+	apply_on_highlights(highlights, opts.on_highlights, name)
 
 	return highlights
 end
