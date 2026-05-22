@@ -1,5 +1,6 @@
 local M = {}
 
+local serialize = require("arete.serialize")
 local uv = vim.uv or vim.loop
 
 local cache_version = 1
@@ -9,52 +10,6 @@ local function assert_theme_name(name)
 	if type(name) ~= "string" or name == "" or not name:match(theme_name_pattern) then
 		error("arete: theme name must be a non-empty module-safe string", 3)
 	end
-end
-
-local function sorted_keys(tbl)
-	local keys = {}
-	for key in pairs(tbl) do
-		keys[#keys + 1] = key
-	end
-
-	table.sort(keys, function(left, right)
-		if type(left) == type(right) then
-			return left < right
-		end
-
-		return type(left) < type(right)
-	end)
-
-	return keys
-end
-
-local function serialize(value)
-	local kind = type(value)
-
-	if kind == "string" then
-		return ("%q"):format(value)
-	end
-
-	if kind == "number" or kind == "boolean" then
-		return tostring(value)
-	end
-
-	if kind == "table" then
-		local chunks = { "{" }
-
-		for _, key in ipairs(sorted_keys(value)) do
-			chunks[#chunks + 1] = "["
-			chunks[#chunks + 1] = serialize(key)
-			chunks[#chunks + 1] = "]="
-			chunks[#chunks + 1] = serialize(value[key])
-			chunks[#chunks + 1] = ","
-		end
-
-		chunks[#chunks + 1] = "}"
-		return table.concat(chunks)
-	end
-
-	error(("arete: cannot serialize %s values into theme cache"):format(kind), 2)
 end
 
 local function write_file(path, data)
@@ -90,10 +45,10 @@ function M.compile(name, theme)
 	local lines = {}
 
 	if theme.background then
-		lines[#lines + 1] = ("vim.o.background=%s"):format(serialize(theme.background))
+		lines[#lines + 1] = ("vim.o.background=%s"):format(serialize.value(theme.background))
 	end
 
-	lines[#lines + 1] = ("local highlights=%s"):format(serialize(theme.highlights))
+	lines[#lines + 1] = ("local highlights=%s"):format(serialize.value(theme.highlights))
 	lines[#lines + 1] = "for group,spec in pairs(highlights) do"
 	lines[#lines + 1] = "vim.api.nvim_set_hl(0,group,spec)"
 	lines[#lines + 1] = "end"
