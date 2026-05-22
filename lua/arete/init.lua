@@ -1,5 +1,8 @@
 local M = {}
 
+local compiler = require("arete.compiler")
+local uv = vim.uv or vim.loop
+
 local theme_name_pattern = "^[%w_.-]+$"
 
 local function assert_theme_name(name)
@@ -21,6 +24,21 @@ local function load_theme(name)
 	end
 
 	return theme
+end
+
+local function load_cache(name)
+	local path = compiler.cache_path(name)
+
+	if not uv.fs_stat(path) then
+		return nil
+	end
+
+	local ok, err = pcall(dofile, path)
+	if ok then
+		return path
+	end
+
+	return nil, err
 end
 
 local function clear_highlights()
@@ -45,14 +63,30 @@ end
 function M.load(name, opts)
 	opts = opts or {}
 
-	local theme = load_theme(name)
-
 	if opts.clear ~= false then
 		clear_highlights()
 	end
 
+	if opts.cache ~= false then
+		local cache_path = load_cache(name)
+		if cache_path then
+			vim.g.colors_name = name
+			return {
+				name = name,
+				cache_path = cache_path,
+				cached = true,
+			}
+		end
+	end
+
+	local theme = load_theme(name)
+
 	M.apply(theme)
 	vim.g.colors_name = theme.name or name
+
+	if opts.cache ~= false and opts.compile ~= false then
+		compiler.compile(name, theme)
+	end
 
 	return theme
 end
