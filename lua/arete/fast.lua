@@ -50,19 +50,9 @@ local function fast(name)
     entries[key] = entry
   end
 
-  if last and last.groups and entry.groups then
-    local keep = {}
-    local ng = entry.groups
-    for i = 1, #ng do
-      keep[ng[i]] = true
-    end
-    local set = vim.api.nvim_set_hl
-    local lg = last.groups
-    for i = 1, #lg do
-      if not keep[lg[i]] then
-        set(0, lg[i], {})
-      end
-    end
+  vim.cmd("highlight clear")
+  if vim.fn.exists("syntax_on") == 1 then
+    vim.cmd("syntax reset")
   end
 
   entry.apply()
