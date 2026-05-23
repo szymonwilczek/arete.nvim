@@ -3,7 +3,7 @@ local M = {}
 local serialize = require("arete.serialize")
 local uv = vim.uv or vim.loop
 
-local cache_version = 4
+local cache_version = 5
 local theme_name_pattern = "^[%w_.-]+$"
 local fingerprint_pattern = "^[%w]+$"
 
