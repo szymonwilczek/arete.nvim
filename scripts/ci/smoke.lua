@@ -70,6 +70,21 @@ local function sorted_paths(pattern)
   return paths
 end
 
+local function resolve_link(highlights, group, seen)
+  local spec = highlights[group]
+  if spec == nil or spec.link == nil then
+    return spec
+  end
+
+  seen = seen or {}
+  if seen[group] then
+    return nil
+  end
+  seen[group] = true
+
+  return resolve_link(highlights, spec.link, seen)
+end
+
 local function validate_theme_table(name, theme)
   if type(theme) ~= "table" then
     fail(("%s must return a table"):format(name))
@@ -132,6 +147,54 @@ local function validate_statusline_modes(name, prepared)
   end
 end
 
+local function validate_resolved_group(name, prepared, group, min_contrast)
+  local spec = resolve_link(prepared.highlights, group)
+  if type(spec) ~= "table" then
+    fail(("%s missing resolved %s"):format(name, group))
+  end
+
+  if min_contrast == nil then
+    return
+  end
+
+  local ratio = contrast_ratio(spec.fg, spec.bg)
+  if spec.fg == spec.bg or ratio < min_contrast then
+    fail(("%s %s is not readable: fg=%s bg=%s contrast=%.2f"):format(name, group, spec.fg, spec.bg, ratio))
+  end
+end
+
+local function validate_ui_surfaces(name, prepared)
+  local groups = {
+    FloatBorder = 3.0,
+    FloatFooter = 3.0,
+    FloatTitle = 4.5,
+    NormalFloat = 4.5,
+    Pmenu = 4.5,
+    PmenuMatch = 4.5,
+    PmenuMatchSel = 4.5,
+    PmenuSel = 4.5,
+    WinSeparator = 3.0,
+  }
+
+  for group, min_contrast in pairs(groups) do
+    validate_resolved_group(name, prepared, group, min_contrast)
+  end
+
+  for _, group in ipairs({
+    "DiagnosticFloatingError",
+    "DiagnosticFloatingWarn",
+    "DiagnosticFloatingInfo",
+    "DiagnosticFloatingHint",
+    "LspInfoBorder",
+    "PmenuKind",
+    "PmenuKindSel",
+    "PmenuExtra",
+    "PmenuExtraSel",
+  }) do
+    validate_resolved_group(name, prepared, group)
+  end
+end
+
 local themes = {}
 
 for _, path in ipairs(sorted_paths("lua/arete/themes/**/*.lua")) do
@@ -175,6 +238,7 @@ table.sort(names)
 for _, name in ipairs(names) do
   local prepared = arete.load(name, { cache = false, compile = false, force = true })
   validate_statusline_modes(name, prepared)
+  validate_ui_surfaces(name, prepared)
 end
 
 print(("checked %d themes"):format(#names))
