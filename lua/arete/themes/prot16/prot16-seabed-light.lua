@@ -1,5 +1,5 @@
 return {
-	["background"] = "light",
+	["background"] = "dark",
 	["highlights"] = {
 		["@attribute"] = {
 			["link"] = "Macro",
@@ -443,7 +443,8 @@ return {
 			["fg"] = "#846b85",
 		},
 		["FloatBorder"] = {
-			["link"] = "NormalFloat",
+			["bg"] = "#263d48",
+			["fg"] = "#969da8",
 		},
 		["FloatFooter"] = {
 			["link"] = "FloatTitle",
@@ -458,12 +459,12 @@ return {
 			["link"] = "Title",
 		},
 		["FoldColumn"] = {
-			["bg"] = "#263d48",
-			["fg"] = "#060d18",
+			["bg"] = "#162d38",
+			["fg"] = "#96adb8",
 		},
 		["Folded"] = {
-			["bg"] = "#263d48",
-			["fg"] = "#060d18",
+			["bg"] = "#162d38",
+			["fg"] = "#96adb8",
 		},
 		["Function"] = {
 			["fg"] = "#4d5b94",
@@ -545,7 +546,8 @@ return {
 			["fg"] = "#96adb8",
 		},
 		["NormalFloat"] = {
-			["bg"] = "#eef1f8",
+			["bg"] = "#263d48",
+			["fg"] = "#96adb8",
 		},
 		["NormalNC"] = {},
 		["Number"] = {
@@ -979,8 +981,8 @@ return {
 			["fg"] = "#35838c",
 		},
 		["Pmenu"] = {
-			["bg"] = "#263d48",
-			["fg"] = "#060d18",
+			["bg"] = "#162d38",
+			["fg"] = "#96adb8",
 		},
 		["PmenuBorder"] = {
 			["link"] = "Pmenu",
@@ -1004,7 +1006,7 @@ return {
 			["bold"] = true,
 		},
 		["PmenuSbar"] = {
-			["bg"] = "#667d88",
+			["bg"] = "#263d48",
 		},
 		["PmenuSel"] = {
 			["bg"] = "#6a865a",
@@ -1085,9 +1087,9 @@ return {
 			["undercurl"] = true,
 		},
 		["SpellCap"] = {
-			["bg"] = "#263d48",
-			["fg"] = "#060d18",
-			["sp"] = "#6b5300",
+			["bg"] = "#162d38",
+			["fg"] = "#96adb8",
+			["sp"] = "#6a867a",
 			["undercurl"] = true,
 		},
 		["SpellLocal"] = {
@@ -1198,13 +1200,13 @@ return {
 			["link"] = "PmenuSel",
 		},
 		["WinBar"] = {
-			["bg"] = "#eef1f8",
+			["bg"] = "#263d48",
 			["bold"] = true,
-			["fg"] = "#4f5258",
+			["fg"] = "#96adb8",
 		},
 		["WinBarNC"] = {
-			["bg"] = "#eef1f8",
-			["fg"] = "#4f5258",
+			["bg"] = "#263d48",
+			["fg"] = "#969da8",
 		},
 		["WinSeparator"] = {
 			["link"] = "Normal",

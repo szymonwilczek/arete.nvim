@@ -125,6 +125,50 @@ local function source_theme(path)
   }
 end
 
+local function patch_dark_light_variant(theme, colors)
+  theme.background = "dark"
+
+  local highlights = theme.highlights
+  local surface = colors.surface
+  local bg = colors.bg
+  local fg = colors.fg
+  local fg_alt = colors.fg_alt or fg
+
+  highlights.NormalFloat = { fg = fg, bg = surface }
+  highlights.FloatBorder = { fg = fg_alt, bg = surface }
+  highlights.Pmenu = { fg = fg, bg = bg }
+  highlights.PmenuBorder = { link = "Pmenu" }
+  highlights.PmenuExtra = { link = "Pmenu" }
+  highlights.PmenuKind = { link = "Pmenu" }
+  highlights.PmenuSbar = { bg = surface }
+  highlights.PmenuSel = highlights.PmenuSel or { fg = bg, bg = fg }
+  highlights.FoldColumn = { fg = fg, bg = bg }
+  highlights.Folded = { fg = fg, bg = bg }
+  highlights.SpellCap = { fg = fg, bg = bg, sp = colors.warning, undercurl = true }
+  highlights.WinBar = { fg = fg, bg = surface, bold = true }
+  highlights.WinBarNC = { fg = fg_alt, bg = surface }
+end
+
+local function apply_source_fixes(theme)
+  if theme.source_name == "noir_light" then
+    patch_dark_light_variant(theme, {
+      bg = "#191e18",
+      surface = "#292e28",
+      fg = "#758f74",
+      fg_alt = "#728d8c",
+      warning = "#90842a",
+    })
+  elseif theme.source_name == "seabed_light" then
+    patch_dark_light_variant(theme, {
+      bg = "#162d38",
+      surface = "#263d48",
+      fg = "#96adb8",
+      fg_alt = "#969da8",
+      warning = "#6a867a",
+    })
+  end
+end
+
 local function discover_themes()
   local paths = vim.fn.globpath(source_root, "*/vim/*_*.vim", false, true)
   table.sort(paths)
@@ -138,6 +182,7 @@ local imported = {}
 
 for _, path in ipairs(discover_themes()) do
   local theme = source_theme(path)
+  apply_source_fixes(theme)
 
   write_file(theme_root .. "/" .. theme.name .. ".lua", "return " .. serialize.pretty(theme) .. "\n")
   write_file(colors_root .. "/" .. theme.name .. ".lua", ('require("arete.fast")("%s")\n'):format(theme.name))

@@ -51,7 +51,7 @@ end
 
 local cache_root = nil
 local function cache_path(name, fingerprint)
-  cache_root = cache_root or (vim.fn.stdpath("cache") .. "/arete/5/")
+  cache_root = cache_root or (vim.fn.stdpath("cache") .. "/arete/6/")
   if fingerprint then
     return cache_root .. name .. "@" .. fingerprint .. ".luac"
   end
