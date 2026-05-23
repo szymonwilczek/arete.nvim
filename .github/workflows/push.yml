@@ -3,6 +3,9 @@ name: Push
 on:
   push:
 
+permissions:
+  contents: read
+
 jobs:
   commits:
     name: Commit format
