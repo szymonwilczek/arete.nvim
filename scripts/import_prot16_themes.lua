@@ -46,6 +46,86 @@ local function color(value)
   return ("#%06x"):format(value)
 end
 
+local function hex_to_rgb(value)
+  if type(value) ~= "string" then
+    return nil
+  end
+
+  local r, g, b = value:match("^#(%x%x)(%x%x)(%x%x)$")
+  if not r then
+    return nil
+  end
+
+  return tonumber(r, 16), tonumber(g, 16), tonumber(b, 16)
+end
+
+local function rgb_to_hex(r, g, b)
+  return ("#%02x%02x%02x"):format(r, g, b)
+end
+
+local function channel_luminance(channel)
+  local value = channel / 255
+  if value <= 0.03928 then
+    return value / 12.92
+  end
+
+  return ((value + 0.055) / 1.055) ^ 2.4
+end
+
+local function luminance(value)
+  local r, g, b = hex_to_rgb(value)
+  if not r then
+    return nil
+  end
+
+  return 0.2126 * channel_luminance(r) + 0.7152 * channel_luminance(g) + 0.0722 * channel_luminance(b)
+end
+
+local function contrast_ratio(fg, bg)
+  local l1 = luminance(fg)
+  local l2 = luminance(bg)
+  if not l1 or not l2 then
+    return 0
+  end
+
+  if l1 < l2 then
+    l1, l2 = l2, l1
+  end
+
+  return (l1 + 0.05) / (l2 + 0.05)
+end
+
+local function blend(fg, target, amount)
+  local fr, fg_g, fb = hex_to_rgb(fg)
+  local tr, tg, tb = hex_to_rgb(target)
+  if not fr or not tr then
+    return fg
+  end
+
+  local function mix(a, b)
+    return math.floor(a + (b - a) * amount + 0.5)
+  end
+
+  return rgb_to_hex(mix(fr, tr), mix(fg_g, tg), mix(fb, tb))
+end
+
+local function readable_foreground(fg, bg, minimum)
+  if contrast_ratio(fg, bg) >= minimum then
+    return fg
+  end
+
+  local target = contrast_ratio("#ffffff", bg) >= contrast_ratio("#000000", bg) and "#ffffff" or "#000000"
+
+  for step = 1, 40 do
+    local candidate = blend(fg, target, step / 40)
+    if contrast_ratio(candidate, bg) >= minimum then
+      return candidate
+    end
+  end
+
+  return target
+end
+
 local function normalize_hl(spec)
   if spec.link then
     return { link = spec.link }
@@ -147,6 +227,12 @@ local function patch_dark_light_variant(theme, colors)
   highlights.SpellCap = { fg = fg, bg = bg, sp = colors.warning, undercurl = true }
   highlights.WinBar = { fg = fg, bg = surface, bold = true }
   highlights.WinBarNC = { fg = fg_alt, bg = surface }
+
+  for _, spec in pairs(highlights) do
+    if type(spec) == "table" and spec.link == nil and spec.bg == nil and hex_to_rgb(spec.fg) then
+      spec.fg = readable_foreground(spec.fg, bg, 4.5)
+    end
+  end
 end
 
 local function apply_source_fixes(theme)

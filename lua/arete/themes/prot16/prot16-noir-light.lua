@@ -220,7 +220,7 @@ return {
 			["link"] = "Special",
 		},
 		["@variable"] = {
-			["fg"] = "#14161b",
+			["fg"] = "#848587",
 		},
 		["@variable.builtin"] = {
 			["link"] = "Special",
@@ -229,16 +229,16 @@ return {
 			["link"] = "Special",
 		},
 		["Added"] = {
-			["fg"] = "#005523",
+			["fg"] = "#599170",
 		},
 		["Boolean"] = {
 			["fg"] = "#a28d7c",
 		},
 		["Changed"] = {
-			["fg"] = "#007373",
+			["fg"] = "#399393",
 		},
 		["Character"] = {
-			["fg"] = "#7f7dad",
+			["fg"] = "#8280af",
 		},
 		["ColorColumn"] = {
 			["bg"] = "#758c9b",
@@ -258,7 +258,7 @@ return {
 			["fg"] = "#9b9ea4",
 		},
 		["Conditional"] = {
-			["fg"] = "#358092",
+			["fg"] = "#4e90a0",
 		},
 		["Constant"] = {
 			["fg"] = "#76924c",
@@ -291,23 +291,23 @@ return {
 			["link"] = "SignColumn",
 		},
 		["Debug"] = {
-			["fg"] = "#a2744a",
+			["fg"] = "#a77b53",
 		},
 		["Define"] = {
-			["fg"] = "#358664",
+			["fg"] = "#499274",
 		},
 		["Delimeter"] = {
 			["fg"] = "#758f74",
 		},
 		["Delimiter"] = {
-			["fg"] = "#14161b",
+			["fg"] = "#848587",
 		},
 		["DiagnosticDeprecated"] = {
 			["sp"] = "#590008",
 			["strikethrough"] = true,
 		},
 		["DiagnosticError"] = {
-			["fg"] = "#590008",
+			["fg"] = "#a8797d",
 		},
 		["DiagnosticFloatingError"] = {
 			["link"] = "DiagnosticError",
@@ -325,13 +325,13 @@ return {
 			["link"] = "DiagnosticWarn",
 		},
 		["DiagnosticHint"] = {
-			["fg"] = "#004c73",
+			["fg"] = "#598ba4",
 		},
 		["DiagnosticInfo"] = {
-			["fg"] = "#007373",
+			["fg"] = "#399393",
 		},
 		["DiagnosticOk"] = {
-			["fg"] = "#005523",
+			["fg"] = "#599170",
 		},
 		["DiagnosticSignError"] = {
 			["link"] = "DiagnosticError",
@@ -402,7 +402,7 @@ return {
 			["link"] = "DiagnosticWarn",
 		},
 		["DiagnosticWarn"] = {
-			["fg"] = "#6b5300",
+			["fg"] = "#97874d",
 		},
 		["DiffAdd"] = {
 			["bg"] = "#358664",
@@ -434,13 +434,13 @@ return {
 			["fg"] = "#081614",
 		},
 		["ErrorMsg"] = {
-			["fg"] = "#590008",
+			["fg"] = "#a8797d",
 		},
 		["Exception"] = {
-			["fg"] = "#a2744a",
+			["fg"] = "#a77b53",
 		},
 		["Float"] = {
-			["fg"] = "#358664",
+			["fg"] = "#499274",
 		},
 		["FloatBorder"] = {
 			["bg"] = "#292e28",
@@ -467,25 +467,25 @@ return {
 			["fg"] = "#758f74",
 		},
 		["Function"] = {
-			["fg"] = "#358092",
+			["fg"] = "#4e90a0",
 		},
 		["Identifier"] = {
-			["fg"] = "#358092",
+			["fg"] = "#4e90a0",
 		},
 		["Ignore"] = {
-			["fg"] = "#90842a",
+			["fg"] = "#93872f",
 		},
 		["IncSearch"] = {
 			["link"] = "CurSearch",
 		},
 		["Include"] = {
-			["fg"] = "#358092",
+			["fg"] = "#4e90a0",
 		},
 		["Keyword"] = {
-			["fg"] = "#358092",
+			["fg"] = "#4e90a0",
 		},
 		["Label"] = {
-			["fg"] = "#358092",
+			["fg"] = "#4e90a0",
 		},
 		["LineNr"] = {
 			["fg"] = "#758c9b",
@@ -521,7 +521,7 @@ return {
 			["link"] = "Visual",
 		},
 		["Macro"] = {
-			["fg"] = "#358664",
+			["fg"] = "#499274",
 		},
 		["MatchParen"] = {
 			["bg"] = "#358092",
@@ -529,7 +529,7 @@ return {
 			["fg"] = "#191e18",
 		},
 		["ModeMsg"] = {
-			["fg"] = "#005523",
+			["fg"] = "#599170",
 		},
 		["MoreMsg"] = {
 			["fg"] = "#758c9b",
@@ -551,7 +551,7 @@ return {
 		},
 		["NormalNC"] = {},
 		["Number"] = {
-			["fg"] = "#358664",
+			["fg"] = "#499274",
 		},
 		["NvimAnd"] = {
 			["link"] = "NvimBinaryOperator",
@@ -975,10 +975,10 @@ return {
 			["link"] = "NvimUnaryOperator",
 		},
 		["OkMsg"] = {
-			["fg"] = "#005523",
+			["fg"] = "#599170",
 		},
 		["Operator"] = {
-			["fg"] = "#7f7dad",
+			["fg"] = "#8280af",
 		},
 		["Pmenu"] = {
 			["bg"] = "#191e18",
@@ -1023,7 +1023,7 @@ return {
 			["bg"] = "#9b9ea4",
 		},
 		["PreCondit"] = {
-			["fg"] = "#358092",
+			["fg"] = "#4e90a0",
 		},
 		["PreInsert"] = {
 			["link"] = "Added",
@@ -1032,10 +1032,10 @@ return {
 			["fg"] = "#76924c",
 		},
 		["Question"] = {
-			["fg"] = "#a2744a",
+			["fg"] = "#a77b53",
 		},
 		["QuickFixLine"] = {
-			["fg"] = "#007373",
+			["fg"] = "#399393",
 		},
 		["RedrawDebugClear"] = {
 			["bg"] = "#fce094",
@@ -1050,10 +1050,10 @@ return {
 			["bg"] = "#ffc0b9",
 		},
 		["Removed"] = {
-			["fg"] = "#590008",
+			["fg"] = "#a8797d",
 		},
 		["Repeat"] = {
-			["fg"] = "#90842a",
+			["fg"] = "#93872f",
 		},
 		["Search"] = {
 			["bg"] = "#358092",
@@ -1069,13 +1069,13 @@ return {
 			["link"] = "SnippetTabstop",
 		},
 		["Special"] = {
-			["fg"] = "#7f7dad",
+			["fg"] = "#8280af",
 		},
 		["SpecialChar"] = {
 			["fg"] = "#a28d7c",
 		},
 		["SpecialComment"] = {
-			["fg"] = "#90842a",
+			["fg"] = "#93872f",
 		},
 		["SpecialKey"] = {
 			["fg"] = "#a28d7c",
@@ -1128,10 +1128,10 @@ return {
 		},
 		["StdoutMsg"] = {},
 		["StorageClass"] = {
-			["fg"] = "#358092",
+			["fg"] = "#4e90a0",
 		},
 		["String"] = {
-			["fg"] = "#4a78a6",
+			["fg"] = "#6189b1",
 		},
 		["Structure"] = {
 			["fg"] = "#76924c",
@@ -1149,7 +1149,7 @@ return {
 			["fg"] = "#191e18",
 		},
 		["Tag"] = {
-			["fg"] = "#358092",
+			["fg"] = "#4e90a0",
 		},
 		["TermCursor"] = {
 			["reverse"] = true,
@@ -1163,13 +1163,13 @@ return {
 			["fg"] = "#a28d7c",
 		},
 		["Type"] = {
-			["fg"] = "#358092",
+			["fg"] = "#4e90a0",
 		},
 		["Typedef"] = {
-			["fg"] = "#358664",
+			["fg"] = "#499274",
 		},
 		["Underlined"] = {
-			["fg"] = "#4a78a6",
+			["fg"] = "#6189b1",
 			["underline"] = true,
 		},
 		["VertSplit"] = {},
@@ -1177,7 +1177,7 @@ return {
 			["fg"] = "#76924c",
 		},
 		["VimOption"] = {
-			["fg"] = "#358664",
+			["fg"] = "#499274",
 		},
 		["Visual"] = {
 			["bg"] = "#182624",
@@ -1191,7 +1191,7 @@ return {
 			["fg"] = "#081614",
 		},
 		["WarningMsg"] = {
-			["fg"] = "#6b5300",
+			["fg"] = "#97874d",
 		},
 		["Whitespace"] = {
 			["link"] = "NonText",
@@ -1212,16 +1212,16 @@ return {
 			["link"] = "Normal",
 		},
 		["diffAdded"] = {
-			["fg"] = "#358664",
+			["fg"] = "#499274",
 		},
 		["diffFile"] = {
 			["fg"] = "#76924c",
 		},
 		["diffNewFile"] = {
-			["fg"] = "#4a78a6",
+			["fg"] = "#6189b1",
 		},
 		["diffRemoved"] = {
-			["fg"] = "#a2744a",
+			["fg"] = "#a77b53",
 		},
 		["lCursor"] = {
 			["bg"] = "#758f74",

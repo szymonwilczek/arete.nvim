@@ -17,7 +17,7 @@ local function fallback(name)
 end
 
 local function root()
-  cache_root = cache_root or (vim.fn.stdpath("cache") .. "/arete/6/")
+  cache_root = cache_root or (vim.fn.stdpath("cache") .. "/arete/7/")
   return cache_root
 end
 
