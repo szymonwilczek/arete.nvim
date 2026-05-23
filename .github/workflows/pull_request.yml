@@ -1,0 +1,72 @@
+name: Pull Request
+
+on:
+  pull_request:
+
+jobs:
+  commits:
+    name: Commit format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate commits
+        shell: bash
+        run: bash scripts/ci/check-commits.sh "${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}"
+
+  theme-docs:
+    name: Theme docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Require README updates for new themes
+        shell: bash
+        run: bash scripts/ci/check-theme-docs.sh "${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}"
+
+  format:
+    name: Stylua
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check formatting
+        uses: JohnnyMorganz/stylua-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: latest
+          args: --check lua scripts colors
+
+  smoke:
+    name: Neovim ${{ matrix.neovim }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        neovim:
+          - stable
+          - nightly
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Neovim
+        uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: ${{ matrix.neovim }}
+
+      - name: Static and smoke checks
+        shell: bash
+        run: |
+          nvim --version
+          XDG_CACHE_HOME="${RUNNER_TEMP}/cache" \
+          NVIM_LOG_FILE="${RUNNER_TEMP}/nvim.log" \
+          nvim --headless -u NONE -i NONE -l scripts/ci/smoke.lua
