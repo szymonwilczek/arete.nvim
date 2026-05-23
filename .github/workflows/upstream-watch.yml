@@ -1,0 +1,38 @@
+name: Upstream Watch
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+    inputs:
+      max_age_days:
+        description: "How many days of RSS entries to inspect"
+        required: false
+        default: "14"
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: upstream-watch
+  cancel-in-progress: false
+
+jobs:
+  prot-feed:
+    name: Prot RSS feed
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Open issues for upstream theme updates
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MAX_AGE_DAYS: ${{ github.event_name == 'workflow_dispatch' && inputs.max_age_days || '14' }}
+        run: |
+          python3 scripts/ci/watch-prot-feed.py \
+            --feed "https://protesilaos.com/master.xml" \
+            --repo "${GITHUB_REPOSITORY}" \
+            --max-age-days "${MAX_AGE_DAYS}" \
+            --label "upstream-update"
