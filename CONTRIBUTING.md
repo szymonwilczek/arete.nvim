@@ -100,12 +100,17 @@ Use the import scripts whenever possible. They preserve the source-to-port path 
 
 Importer scripts live under `scripts/`:
 
-- `scripts/import_ef_themes.lua`
+- `scripts/import_ef_themes.el`
 - `scripts/import_modus_themes.el`
 - `scripts/import_doric_themes.el`
 - `scripts/import_standard_themes.el`
 - `scripts/import_tempus_themes.lua`
 - `scripts/import_prot16_themes.lua`
+
+The Ef importer reads the GNU Emacs package directly. Point
+`ARETE_EF_EMACS_THEMES_PATH` at the upstream `ef-themes` checkout or ELPA
+package directory, and optionally set `ARETE_EF_THEMES` to a comma- or
+space-separated subset such as `ef-arcadia,ef-atlantis`.
 
 When adding or updating a theme:
 

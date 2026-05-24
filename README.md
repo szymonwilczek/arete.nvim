@@ -160,6 +160,13 @@ require("arete").setup({
 </details>
 
 <details>
+<summary><b>ef-arcadia</b></summary>
+<p align="center">
+  <img src="assets/Ef/Light/ef-arcadia.png"/>
+</p>
+</details>
+
+<details>
 <summary><b>ef-cyprus</b></summary>
 <p align="center">
   <img src="assets/Ef/Light/ef-cyprus.png"/>
@@ -283,6 +290,13 @@ require("arete").setup({
 
 <details>
 <summary><h4>Dark Themes</h4></summary>
+
+<details>
+<summary><b>ef-atlantis</b></summary>
+<p align="center">
+  <img src="assets/Ef/Dark/ef-atlantis.png"/>
+</p>
+</details>
 
 <details>
 <summary><b>ef-autumn</b></summary>
