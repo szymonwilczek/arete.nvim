@@ -243,7 +243,6 @@ return {
 		},
 		["ColorColumn"] = {
 			["bg"] = "#261c2c",
-			["fg"] = "#a29fa0",
 		},
 		["Comment"] = {
 			["fg"] = "#968282",

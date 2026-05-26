@@ -114,6 +114,10 @@ local function validate_theme_table(name, theme)
     assert_color(spec.fg, ("%s.%s.fg"):format(name, group))
     assert_color(spec.bg, ("%s.%s.bg"):format(name, group))
     assert_color(spec.sp, ("%s.%s.sp"):format(name, group))
+
+    if group == "ColorColumn" and spec.link == nil and spec.fg ~= nil then
+      fail(("%s.ColorColumn must be background-only, got fg=%s bg=%s"):format(name, spec.fg, spec.bg))
+    end
   end
 
   for index, color in pairs(theme.terminal or {}) do
@@ -195,6 +199,23 @@ local function validate_ui_surfaces(name, prepared)
   end
 end
 
+local function validate_background_only_groups(name, prepared)
+  for _, group in ipairs({ "ColorColumn" }) do
+    local spec = resolve_link(prepared.highlights, group)
+    if spec ~= nil then
+      if type(spec) ~= "table" then
+        fail(("%s resolved %s must be a table"):format(name, group))
+      end
+      if spec.fg ~= nil then
+        fail(("%s %s must be background-only, got fg=%s bg=%s"):format(name, group, spec.fg, spec.bg))
+      end
+      if spec.bg == nil then
+        fail(("%s %s must define bg"):format(name, group))
+      end
+    end
+  end
+end
+
 local themes = {}
 
 for _, path in ipairs(sorted_paths("lua/arete/themes/**/*.lua")) do
@@ -239,6 +260,7 @@ for _, name in ipairs(names) do
   local prepared = arete.load(name, { cache = false, compile = false, force = true })
   validate_statusline_modes(name, prepared)
   validate_ui_surfaces(name, prepared)
+  validate_background_only_groups(name, prepared)
 end
 
 print(("checked %d themes"):format(#names))

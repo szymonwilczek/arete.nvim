@@ -19,7 +19,6 @@ return {
 			["bg"] = "#d0d0c0",
 		},
 		["ColorColumn"] = {
-			["fg"] = "#b0b7aa",
 			["bg"] = "#b0b7aa",
 		},
 		["Visual"] = {

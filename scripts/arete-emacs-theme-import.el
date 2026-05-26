@@ -192,6 +192,17 @@
       (push (cons "underline" t) spec))
     (nreverse spec)))
 
+(defun arete-emacs-theme-background-only-spec (spec)
+  (let ((fg (cdr (assoc "fg" spec)))
+         (bg (cdr (assoc "bg" spec)))
+         result)
+    (dolist (entry spec)
+      (unless (string= (car entry) "fg")
+        (push entry result)))
+    (when (and (not bg) fg)
+      (push (cons "bg" fg) result))
+    (nreverse result)))
+
 (defun arete-emacs-theme-modus-terminal-colors (theme)
   (let ((names '(fg-term-black fg-term-red fg-term-green fg-term-yellow
                   fg-term-blue fg-term-magenta fg-term-cyan fg-term-white
@@ -236,6 +247,8 @@
   (let (highlights)
     (dolist (entry arete-emacs-theme-face-map)
       (let ((spec (arete-emacs-theme-nvim-spec (cdr entry))))
+        (when (and spec (eq (car entry) 'ColorColumn))
+          (setq spec (arete-emacs-theme-background-only-spec spec)))
         (when spec
           (push (cons (symbol-name (car entry)) spec) highlights))))
     (dolist (entry arete-emacs-theme-links)

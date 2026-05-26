@@ -78,6 +78,10 @@ local transparent_groups = {
   "WinSeparator",
 }
 
+local background_only_groups = {
+  "ColorColumn",
+}
+
 local function clone_highlights(highlights)
   local copy = {}
   for group, spec in pairs(highlights) do
@@ -257,6 +261,18 @@ end
 local function highlight_color(highlights, group, key)
   local spec = resolve_link(highlights, group)
   return spec and spec[key] or nil
+end
+
+local function apply_background_only_groups(highlights)
+  for _, group in ipairs(background_only_groups) do
+    local spec = highlights[group]
+    if spec and not spec.link then
+      if spec.bg == nil and spec.fg ~= nil and spec.fg ~= "NONE" then
+        spec.bg = spec.fg
+      end
+      spec.fg = nil
+    end
+  end
 end
 
 local function first_readable_color(highlights, names, key)
@@ -688,6 +704,7 @@ end
 function M.prepare(theme, opts, name)
   local highlights = clone_highlights(theme.highlights)
 
+  apply_background_only_groups(highlights)
   apply_statusline_modes(highlights)
   apply_ui_surfaces(highlights)
   apply_transparent(highlights, opts.transparent)

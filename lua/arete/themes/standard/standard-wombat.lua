@@ -20,7 +20,6 @@ return {
 			["underline"] = true,
 		},
 		["ColorColumn"] = {
-			["fg"] = "#000000",
 			["bg"] = "#000000",
 		},
 		["Visual"] = {

@@ -126,7 +126,7 @@ local function readable_foreground(fg, bg, minimum)
   return target
 end
 
-local function normalize_hl(spec)
+local function normalize_hl(group, spec)
   if spec.link then
     return { link = spec.link }
   end
@@ -158,6 +158,13 @@ local function normalize_hl(spec)
         normalized[key] = value
       end
     end
+  end
+
+  if group == "ColorColumn" then
+    if normalized.bg == nil and normalized.fg ~= nil and normalized.fg ~= "NONE" then
+      normalized.bg = normalized.fg
+    end
+    normalized.fg = nil
   end
 
   return normalized
@@ -193,7 +200,7 @@ local function source_theme(path)
 
   local highlights = {}
   for group, spec in pairs(vim.api.nvim_get_hl(0, {})) do
-    highlights[group] = normalize_hl(spec)
+    highlights[group] = normalize_hl(group, spec)
   end
 
   return {
