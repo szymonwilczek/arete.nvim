@@ -216,6 +216,17 @@ local function validate_background_only_groups(name, prepared)
   end
 end
 
+local function validate_code_punctuation(name)
+  if not name:match("^ef%-") then
+    return
+  end
+
+  local spec = vim.api.nvim_get_hl(0, { name = "@punctuation.delimiter", link = false })
+  if spec.italic then
+    fail(("%s @punctuation.delimiter must not inherit italic comment styling"):format(name))
+  end
+end
+
 local themes = {}
 
 for _, path in ipairs(sorted_paths("lua/arete/themes/**/*.lua")) do
@@ -261,6 +272,7 @@ for _, name in ipairs(names) do
   validate_statusline_modes(name, prepared)
   validate_ui_surfaces(name, prepared)
   validate_background_only_groups(name, prepared)
+  validate_code_punctuation(name)
 end
 
 print(("checked %d themes"):format(#names))

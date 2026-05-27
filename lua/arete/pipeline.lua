@@ -275,6 +275,32 @@ local function apply_background_only_groups(highlights)
   end
 end
 
+local function copy_without_italic(spec)
+  if type(spec) ~= "table" then
+    return nil
+  end
+
+  local copy = {}
+  for key, value in pairs(spec) do
+    if key ~= "link" and key ~= "italic" then
+      copy[key] = value
+    end
+  end
+
+  return next(copy) and copy or nil
+end
+
+local function apply_code_punctuation_style(highlights)
+  if highlights["@punctuation.delimiter"] ~= nil then
+    return
+  end
+
+  local spec = resolve_link(highlights, "@punctuation") or resolve_link(highlights, "Delimiter")
+  if spec and spec.italic then
+    highlights["@punctuation.delimiter"] = copy_without_italic(spec) or {}
+  end
+end
+
 local function first_readable_color(highlights, names, key)
   for _, name in ipairs(names) do
     local value = highlight_color(highlights, name, key)
@@ -705,6 +731,7 @@ function M.prepare(theme, opts, name)
   local highlights = clone_highlights(theme.highlights)
 
   apply_background_only_groups(highlights)
+  apply_code_punctuation_style(highlights)
   apply_statusline_modes(highlights)
   apply_ui_surfaces(highlights)
   apply_transparent(highlights, opts.transparent)
