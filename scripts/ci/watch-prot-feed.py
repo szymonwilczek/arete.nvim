@@ -13,6 +13,7 @@ import re
 import subprocess
 import sys
 import textwrap
+import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
@@ -205,24 +206,22 @@ def ensure_label(repo: str, label: str) -> bool:
 
 
 def issue_exists(repo: str, marker: str) -> bool:
-    query = f"{marker} in:body"
+    query = urllib.parse.urlencode({"state": "all", "per_page": "100"})
     result = gh(
         [
-            "issue",
-            "list",
-            "--repo",
-            repo,
-            "--state",
-            "all",
-            "--search",
-            query,
-            "--json",
-            "number",
-            "--limit",
-            "100",
+            "api",
+            "--paginate",
+            "--slurp",
+            f"repos/{repo}/issues?{query}",
         ]
     )
-    return len(json.loads(result.stdout)) > 0
+    pages = json.loads(result.stdout)
+    return any(
+        marker in (issue.get("body") or "")
+        for page in pages
+        for issue in page
+        if "pull_request" not in issue
+    )
 
 
 def issue_title(entry: Entry) -> str:
