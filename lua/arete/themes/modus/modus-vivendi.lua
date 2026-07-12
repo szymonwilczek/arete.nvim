@@ -97,6 +97,10 @@ return {
 		["Title"] = {
 			["fg"] = "#feacd0",
 		},
+		["Question"] = {
+			["fg"] = "#6ae4b9",
+			["bold"] = true,
+		},
 		["MoreMsg"] = {
 			["fg"] = "#6ae4b9",
 			["bold"] = true,
@@ -124,6 +128,13 @@ return {
 			["fg"] = "#00bcff",
 			["bold"] = true,
 		},
+		["Pmenu"] = {
+			["fg"] = "#00bcff",
+			["bold"] = true,
+		},
+		["PmenuSel"] = {
+			["bg"] = "#2f447f",
+		},
 		["PmenuSbar"] = {
 			["fg"] = "#646464",
 			["bg"] = "#000000",
@@ -131,6 +142,9 @@ return {
 		["PmenuThumb"] = {
 			["fg"] = "#ffffff",
 			["bg"] = "#45605e",
+		},
+		["WildMenu"] = {
+			["bg"] = "#2f447f",
 		},
 		["Comment"] = {
 			["fg"] = "#989898",

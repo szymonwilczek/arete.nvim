@@ -3,7 +3,7 @@
 
 (defvar arete-modus-themes-path
   (or (getenv "ARETE_MODUS_THEMES_PATH")
-    (expand-file-name "~/.config/emacs.bak/elpa/modus-themes-20260418.1313")))
+    (expand-file-name "~/.config/emacs/elpa/modus-themes-20260712.927")))
 
 (add-to-list 'load-path arete-modus-themes-path)
 (add-to-list 'load-path (expand-file-name "scripts" arete-root))
