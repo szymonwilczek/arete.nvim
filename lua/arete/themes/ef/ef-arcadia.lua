@@ -10,7 +10,7 @@ return {
 			["bg"] = "#b0b7aa",
 		},
 		["FloatBorder"] = {
-			["fg"] = "#a5aaaf",
+			["fg"] = "#959a9f",
 		},
 		["Cursor"] = {
 			["bg"] = "#495080",
@@ -81,16 +81,20 @@ return {
 			["bold"] = true,
 		},
 		["VertSplit"] = {
-			["fg"] = "#a5aaaf",
+			["fg"] = "#959a9f",
 		},
 		["WinSeparator"] = {
-			["fg"] = "#a5aaaf",
+			["fg"] = "#959a9f",
 		},
 		["Directory"] = {
 			["fg"] = "#125a7f",
 		},
 		["Title"] = {
 			["fg"] = "#922e7f",
+		},
+		["Question"] = {
+			["fg"] = "#72366f",
+			["bold"] = true,
 		},
 		["MoreMsg"] = {
 			["fg"] = "#006e50",
@@ -119,12 +123,23 @@ return {
 			["fg"] = "#125a7f",
 			["bold"] = true,
 		},
+		["Pmenu"] = {
+			["fg"] = "#125a7f",
+			["bold"] = true,
+		},
+		["PmenuSel"] = {
+			["bg"] = "#b5b8c6",
+		},
 		["PmenuSbar"] = {
-			["fg"] = "#a5aaaf",
+			["fg"] = "#959a9f",
+			["bg"] = "#d6e4d3",
 		},
 		["PmenuThumb"] = {
 			["fg"] = "#40314e",
 			["bg"] = "#afbad0",
+		},
+		["WildMenu"] = {
+			["bg"] = "#b5b8c6",
 		},
 		["Comment"] = {
 			["fg"] = "#72366f",
@@ -213,7 +228,7 @@ return {
 			["bold"] = true,
 		},
 		["Special"] = {
-			["fg"] = "#3f7000",
+			["fg"] = "#3f6d00",
 			["bold"] = true,
 		},
 		["SpecialChar"] = {

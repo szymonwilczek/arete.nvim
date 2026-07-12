@@ -5,11 +5,11 @@
 
 (defvar arete-modus-themes-path
   (or (getenv "ARETE_MODUS_THEMES_PATH")
-    (expand-file-name "~/.config/emacs.bak/elpa/modus-themes-5.2.0")))
+    (expand-file-name "~/.config/emacs/elpa/modus-themes-20260712.927")))
 
 (defvar arete-ef-themes-path
   (or (getenv "ARETE_EF_EMACS_THEMES_PATH")
-    (expand-file-name "~/.config/emacs.bak/elpa/ef-themes-2.1.0")))
+    (expand-file-name "~/.config/emacs/elpa/ef-themes-2.2.0")))
 
 (defun arete-ef-theme-list-from-env ()
   (when-let* ((value (getenv "ARETE_EF_THEMES"))

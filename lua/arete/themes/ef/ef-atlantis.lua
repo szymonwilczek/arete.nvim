@@ -26,11 +26,11 @@ return {
 		},
 		["VisualNOS"] = {
 			["fg"] = "#bfcccf",
-			["bg"] = "#3d2e2f",
+			["bg"] = "#2d3e4a",
 		},
 		["Search"] = {
 			["fg"] = "#bfcccf",
-			["bg"] = "#3e004c",
+			["bg"] = "#3e300c",
 		},
 		["IncSearch"] = {
 			["fg"] = "#bfcccf",
@@ -90,14 +90,18 @@ return {
 			["fg"] = "#6a88ff",
 		},
 		["Title"] = {
-			["fg"] = "#d590af",
+			["fg"] = "#af9ef2",
+		},
+		["Question"] = {
+			["fg"] = "#6a88ff",
+			["bold"] = true,
 		},
 		["MoreMsg"] = {
-			["fg"] = "#00a972",
+			["fg"] = "#00a962",
 			["bold"] = true,
 		},
 		["WarningMsg"] = {
-			["fg"] = "#af9ef2",
+			["fg"] = "#b5967b",
 			["bold"] = true,
 		},
 		["ErrorMsg"] = {
@@ -109,29 +113,40 @@ return {
 			["bold"] = true,
 		},
 		["Todo"] = {
-			["fg"] = "#af9ef2",
+			["fg"] = "#b5967b",
 			["bold"] = true,
 		},
 		["NonText"] = {
 			["fg"] = "#7f8385",
 		},
 		["SpecialKey"] = {
-			["fg"] = "#3dc0b0",
+			["fg"] = "#5db2b7",
 			["bold"] = true,
+		},
+		["Pmenu"] = {
+			["fg"] = "#6a88ff",
+			["bold"] = true,
+		},
+		["PmenuSel"] = {
+			["bg"] = "#2e387f",
 		},
 		["PmenuSbar"] = {
 			["fg"] = "#454e59",
+			["bg"] = "#1a143e",
 		},
 		["PmenuThumb"] = {
 			["fg"] = "#bfcccf",
 			["bg"] = "#5f4f7a",
+		},
+		["WildMenu"] = {
+			["bg"] = "#2e387f",
 		},
 		["Comment"] = {
 			["fg"] = "#7a7fff",
 			["italic"] = true,
 		},
 		["Constant"] = {
-			["fg"] = "#029fff",
+			["fg"] = "#379cf6",
 		},
 		["String"] = {
 			["fg"] = "#6fafff",
@@ -140,45 +155,45 @@ return {
 			["fg"] = "#6fafff",
 		},
 		["Number"] = {
-			["fg"] = "#029fff",
+			["fg"] = "#379cf6",
 		},
 		["Boolean"] = {
-			["fg"] = "#029fff",
+			["fg"] = "#379cf6",
 		},
 		["Float"] = {
-			["fg"] = "#029fff",
+			["fg"] = "#379cf6",
 		},
 		["Identifier"] = {
 			["fg"] = "#77b22f",
 		},
 		["Function"] = {
-			["fg"] = "#d590af",
+			["fg"] = "#af9ef2",
 		},
 		["Statement"] = {
-			["fg"] = "#3dc0b0",
+			["fg"] = "#5db2b7",
 			["bold"] = true,
 		},
 		["Conditional"] = {
-			["fg"] = "#3dc0b0",
+			["fg"] = "#5db2b7",
 			["bold"] = true,
 		},
 		["Repeat"] = {
-			["fg"] = "#3dc0b0",
+			["fg"] = "#5db2b7",
 			["bold"] = true,
 		},
 		["Label"] = {
-			["fg"] = "#3dc0b0",
+			["fg"] = "#5db2b7",
 			["bold"] = true,
 		},
 		["Operator"] = {
 			["fg"] = "#bfcccf",
 		},
 		["Keyword"] = {
-			["fg"] = "#3dc0b0",
+			["fg"] = "#5db2b7",
 			["bold"] = true,
 		},
 		["Exception"] = {
-			["fg"] = "#3dc0b0",
+			["fg"] = "#5db2b7",
 			["bold"] = true,
 		},
 		["PreProc"] = {
@@ -213,7 +228,7 @@ return {
 			["bold"] = true,
 		},
 		["Special"] = {
-			["fg"] = "#00a972",
+			["fg"] = "#00a962",
 			["bold"] = true,
 		},
 		["SpecialChar"] = {
@@ -231,7 +246,7 @@ return {
 			["italic"] = true,
 		},
 		["Debug"] = {
-			["fg"] = "#af9ef2",
+			["fg"] = "#b5967b",
 			["bold"] = true,
 		},
 		["Underlined"] = {
@@ -332,11 +347,11 @@ return {
 		[7] = "#7f8385",
 		[8] = "#3a4661",
 		[9] = "#f47360",
-		[10] = "#00a972",
+		[10] = "#00a962",
 		[11] = "#e6832f",
 		[12] = "#6a88ff",
 		[13] = "#af9ef2",
-		[14] = "#3dc0b0",
+		[14] = "#5db2b7",
 		[15] = "#bfcccf",
 	},
 }
