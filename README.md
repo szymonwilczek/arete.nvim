@@ -721,6 +721,13 @@ require("arete").setup({
 </details>
 
 <details>
+<summary><b>doric-tiger</b></summary>
+<p align="center">
+  <img src="assets/Doric/Light/doric-tiger.png"/>
+</p>
+</details>
+
+<details>
 <summary><b>doric-wind</b></summary>
 <p align="center">
   <img src="assets/Doric/Light/doric-wind.png"/>
@@ -750,6 +757,13 @@ require("arete").setup({
 <summary><b>doric-fire</b></summary>
 <p align="center">
   <img src="assets/Doric/Dark/doric-fire.png"/>
+</p>
+</details>
+
+<details>
+<summary><b>doric-lion</b></summary>
+<p align="center">
+  <img src="assets/Doric/Dark/doric-lion.png"/>
 </p>
 </details>
 
