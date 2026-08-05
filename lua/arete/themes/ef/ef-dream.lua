@@ -28,22 +28,6 @@ return {
 			["fg"] = "#efd5c5",
 			["bg"] = "#665f7a",
 		},
-		["Search"] = {
-			["fg"] = "#efd5c5",
-			["bg"] = "#4e3930",
-		},
-		["IncSearch"] = {
-			["fg"] = "#efd5c5",
-			["bg"] = "#8f665f",
-		},
-		["CurSearch"] = {
-			["fg"] = "#efd5c5",
-			["bg"] = "#8f665f",
-		},
-		["Substitute"] = {
-			["fg"] = "#efd5c5",
-			["bg"] = "#a02f50",
-		},
 		["LineNr"] = {
 			["fg"] = "#8f8886",
 		},
@@ -92,10 +76,6 @@ return {
 		["Title"] = {
 			["fg"] = "#8fcfd0",
 		},
-		["Question"] = {
-			["fg"] = "#ffaacf",
-			["bold"] = true,
-		},
 		["MoreMsg"] = {
 			["fg"] = "#6fb3c0",
 			["bold"] = true,
@@ -123,13 +103,6 @@ return {
 			["fg"] = "#6fb3c0",
 			["bold"] = true,
 		},
-		["Pmenu"] = {
-			["fg"] = "#deb07a",
-			["bold"] = true,
-		},
-		["PmenuSel"] = {
-			["bg"] = "#503240",
-		},
 		["PmenuSbar"] = {
 			["fg"] = "#635850",
 			["bg"] = "#232025",
@@ -137,9 +110,6 @@ return {
 		["PmenuThumb"] = {
 			["fg"] = "#efd5c5",
 			["bg"] = "#795056",
-		},
-		["WildMenu"] = {
-			["bg"] = "#503240",
 		},
 		["Comment"] = {
 			["fg"] = "#a0a0cf",
@@ -155,7 +125,7 @@ return {
 			["fg"] = "#f3a0a0",
 		},
 		["Number"] = {
-			["fg"] = "#80aadf",
+			["fg"] = "#efd5c5",
 		},
 		["Boolean"] = {
 			["fg"] = "#80aadf",
@@ -200,31 +170,34 @@ return {
 			["fg"] = "#65c5a8",
 		},
 		["Include"] = {
-			["fg"] = "#65c5a8",
+			["fg"] = "#deb07a",
+			["bold"] = true,
 		},
 		["Define"] = {
-			["fg"] = "#65c5a8",
+			["fg"] = "#deb07a",
+			["bold"] = true,
 		},
 		["Macro"] = {
 			["fg"] = "#65c5a8",
 		},
 		["PreCondit"] = {
-			["fg"] = "#65c5a8",
+			["fg"] = "#deb07a",
+			["bold"] = true,
 		},
 		["Type"] = {
 			["fg"] = "#a9c99f",
 			["bold"] = true,
 		},
 		["StorageClass"] = {
-			["fg"] = "#a9c99f",
+			["fg"] = "#deb07a",
 			["bold"] = true,
 		},
 		["Structure"] = {
-			["fg"] = "#a9c99f",
+			["fg"] = "#deb07a",
 			["bold"] = true,
 		},
 		["Typedef"] = {
-			["fg"] = "#a9c99f",
+			["fg"] = "#deb07a",
 			["bold"] = true,
 		},
 		["Special"] = {
@@ -237,9 +210,6 @@ return {
 		["Tag"] = {
 			["fg"] = "#e3b0c0",
 			["italic"] = true,
-		},
-		["Delimiter"] = {
-			["fg"] = "#efd5c5",
 		},
 		["SpecialComment"] = {
 			["fg"] = "#caa89f",
@@ -256,6 +226,21 @@ return {
 		["Ignore"] = {
 			["fg"] = "#8f8886",
 		},
+		["Bracket"] = {
+			["fg"] = "#8f8886",
+		},
+		["Delimiter"] = {
+			["fg"] = "#a0a0cf",
+		},
+		["Property"] = {
+			["fg"] = "#f498c0",
+		},
+		["Parameter"] = {
+			["fg"] = "#c0b24f",
+		},
+		["FunctionCall"] = {
+			["fg"] = "#8fcfd0",
+		},
 		["@comment"] = {
 			["link"] = "Comment",
 		},
@@ -265,6 +250,9 @@ return {
 		["@constant.builtin"] = {
 			["link"] = "Special",
 		},
+		["@constant.macro"] = {
+			["link"] = "Identifier",
+		},
 		["@constructor"] = {
 			["link"] = "Special",
 		},
@@ -273,6 +261,12 @@ return {
 		},
 		["@function.builtin"] = {
 			["link"] = "Special",
+		},
+		["@function.call"] = {
+			["link"] = "FunctionCall",
+		},
+		["@function.macro"] = {
+			["link"] = "Macro",
 		},
 		["@keyword"] = {
 			["link"] = "Keyword",
@@ -285,6 +279,30 @@ return {
 		},
 		["@keyword.exception"] = {
 			["link"] = "Exception",
+		},
+		["@keyword.type"] = {
+			["link"] = "Keyword",
+		},
+		["@keyword.storage"] = {
+			["link"] = "Keyword",
+		},
+		["@keyword.directive"] = {
+			["link"] = "Keyword",
+		},
+		["@keyword.directive.define"] = {
+			["link"] = "Keyword",
+		},
+		["@keyword.import"] = {
+			["link"] = "Keyword",
+		},
+		["@keyword.coroutine"] = {
+			["link"] = "Keyword",
+		},
+		["@keyword.function"] = {
+			["link"] = "Keyword",
+		},
+		["@structure"] = {
+			["link"] = "Keyword",
 		},
 		["@label"] = {
 			["link"] = "Label",
@@ -304,6 +322,12 @@ return {
 		["@punctuation"] = {
 			["link"] = "Delimiter",
 		},
+		["@punctuation.delimiter"] = {
+			["link"] = "Delimiter",
+		},
+		["@punctuation.bracket"] = {
+			["link"] = "Bracket",
+		},
 		["@string"] = {
 			["link"] = "String",
 		},
@@ -313,11 +337,128 @@ return {
 		["@type"] = {
 			["link"] = "Type",
 		},
+		["@type.builtin"] = {
+			["link"] = "Special",
+		},
+		["@type.definition"] = {
+			["link"] = "Type",
+		},
+		["@type.qualifier"] = {
+			["link"] = "Keyword",
+		},
+		["@type.enum"] = {
+			["link"] = "Type",
+		},
+		["@type.struct"] = {
+			["link"] = "Type",
+		},
 		["@variable"] = {
 			["link"] = "Identifier",
 		},
 		["@variable.builtin"] = {
 			["link"] = "Special",
+		},
+		["@variable.member"] = {
+			["link"] = "Property",
+		},
+		["@variable.parameter"] = {
+			["link"] = "Parameter",
+		},
+		["@lsp.type.class"] = {
+			["link"] = "Type",
+		},
+		["@lsp.type.decorator"] = {
+			["link"] = "Function",
+		},
+		["@lsp.type.enum"] = {
+			["link"] = "Type",
+		},
+		["@lsp.type.enumMember"] = {
+			["link"] = "Constant",
+		},
+		["@lsp.type.function"] = {
+			["link"] = "Function",
+		},
+		["@lsp.type.interface"] = {
+			["link"] = "Type",
+		},
+		["@lsp.type.macro"] = {
+			["link"] = "Macro",
+		},
+		["@lsp.type.method"] = {
+			["link"] = "Function",
+		},
+		["@lsp.type.namespace"] = {
+			["link"] = "Include",
+		},
+		["@lsp.type.parameter"] = {
+			["link"] = "Parameter",
+		},
+		["@lsp.type.property"] = {
+			["link"] = "Property",
+		},
+		["@lsp.typemod.property.declaration"] = {
+			["link"] = "Property",
+		},
+		["@lsp.typemod.property.readonly"] = {
+			["link"] = "Property",
+		},
+		["@lsp.typemod.parameter.declaration"] = {
+			["link"] = "Parameter",
+		},
+		["@lsp.typemod.variable.declaration"] = {
+			["link"] = "Identifier",
+		},
+		["@lsp.typemod.variable.globalScope"] = {
+			["link"] = "Identifier",
+		},
+		["@lsp.typemod.type.declaration"] = {
+			["link"] = "Type",
+		},
+		["@lsp.typemod.type.definition"] = {
+			["link"] = "Type",
+		},
+		["@lsp.type.struct"] = {
+			["link"] = "Type",
+		},
+		["@lsp.type.type"] = {
+			["link"] = "Type",
+		},
+		["@lsp.type.type.defaultLibrary"] = {
+			["link"] = "Special",
+		},
+		["@lsp.typemod.type.defaultLibrary"] = {
+			["link"] = "Special",
+		},
+		["@lsp.typemod.function.declaration"] = {
+			["link"] = "Function",
+		},
+		["@lsp.typemod.function.definition"] = {
+			["link"] = "Function",
+		},
+		["@lsp.type.typeParameter"] = {
+			["link"] = "Type",
+		},
+		["@lsp.type.variable"] = {
+			["link"] = "Identifier",
+		},
+		["@lsp.type.keyword"] = {
+			["link"] = "Keyword",
+		},
+		["@lsp.type.modifier"] = {
+			["link"] = "Keyword",
+		},
+		["@lsp.type.comment"] = {
+			["link"] = "Comment",
+		},
+		["@lsp.type.string"] = {
+			["link"] = "String",
+		},
+		["@lsp.type.number"] = {
+			["link"] = "Number",
+		},
+		["@lsp.type.operator"] = {
+			["link"] = "Operator",
 		},
 		["DiagnosticError"] = {
 			["link"] = "Error",
