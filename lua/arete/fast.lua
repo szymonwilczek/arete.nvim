@@ -17,7 +17,7 @@ local function fallback(name)
 end
 
 local function root()
-  cache_root = cache_root or (vim.fn.stdpath("cache") .. "/arete/10/")
+  cache_root = cache_root or (vim.fn.stdpath("cache") .. "/arete/24/")
   return cache_root
 end
 
@@ -55,6 +55,9 @@ local function fast(name)
     vim.cmd("syntax reset")
   end
 
+  if vim.highlight and vim.highlight.priorities then
+    vim.highlight.priorities.semantic_tokens = 95
+  end
   entry.apply()
   vim.g.colors_name = name
   last = { name = name, groups = entry.groups, fp = fp }

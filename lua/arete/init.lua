@@ -51,7 +51,7 @@ end
 
 local cache_root = nil
 local function cache_path(name, fingerprint)
-  cache_root = cache_root or (vim.fn.stdpath("cache") .. "/arete/10/")
+  cache_root = cache_root or (vim.fn.stdpath("cache") .. "/arete/24/")
   if fingerprint then
     return cache_root .. name .. "@" .. fingerprint .. ".luac"
   end
@@ -182,6 +182,9 @@ function M.load(name, opts)
     end)
   end
 
+  if vim.highlight and vim.highlight.priorities then
+    vim.highlight.priorities.semantic_tokens = 95
+  end
   last_loaded = {
     name = name,
     fingerprint = fingerprint,
