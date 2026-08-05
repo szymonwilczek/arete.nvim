@@ -5,11 +5,13 @@
 
 (defvar arete-modus-themes-path
   (or (getenv "ARETE_MODUS_THEMES_PATH")
-    (expand-file-name "~/.config/emacs/elpa/modus-themes-20260712.927")))
+      (car (file-expand-wildcards "/tmp/emacs-themes/modus-themes"))
+      (file-name-directory (car (file-expand-wildcards "~/.config/emacs/elpa/modus-themes-*/modus-themes.el")))))
 
 (defvar arete-ef-themes-path
   (or (getenv "ARETE_EF_EMACS_THEMES_PATH")
-    (expand-file-name "~/.config/emacs/elpa/ef-themes-2.2.0")))
+      (car (file-expand-wildcards "/tmp/emacs-themes/ef-themes"))
+      (expand-file-name "~/.config/emacs/elpa/ef-themes-2.2.0")))
 
 (defun arete-ef-theme-list-from-env ()
   (when-let* ((value (getenv "ARETE_EF_THEMES"))

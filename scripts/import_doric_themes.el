@@ -3,7 +3,8 @@
 
 (defvar arete-doric-themes-path
   (or (getenv "ARETE_DORIC_THEMES_PATH")
-    (expand-file-name "/tmp/doric-themes")))
+      (car (file-expand-wildcards "/tmp/emacs-themes/doric-themes"))
+      (expand-file-name "/tmp/doric-themes")))
 
 (add-to-list 'load-path arete-doric-themes-path)
 (add-to-list 'load-path (expand-file-name "scripts" arete-root))
